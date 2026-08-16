@@ -1,0 +1,118 @@
+/* Creature & Anatomy Studies card only. Other project cards intentionally untouched. */
+.visual-anatomy {
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-anatomy > canvas[data-project-canvas="anatomy"] {
+  z-index: 0;
+}
+
+.visual-anatomy .anatomy-showcase {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.visual-anatomy .anatomy-study {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: 50% 70%;
+  filter:
+    drop-shadow(0 16px 18px rgba(0, 0, 0, .48))
+    drop-shadow(0 0 1px rgba(200, 255, 77, .48));
+}
+
+/* Main anatomy sculpt: the visual anchor. */
+.visual-anatomy .anatomy-study--head {
+  z-index: 4;
+  width: 43%;
+  left: 29%;
+  top: 8%;
+  opacity: .96;
+  transform: rotate(-1.5deg);
+}
+
+/* Early construction study sits forward like a pinned process snapshot. */
+.visual-anatomy .anatomy-study--blockout {
+  z-index: 6;
+  width: 34%;
+  left: 1%;
+  bottom: 1%;
+  opacity: .98;
+  transform: rotate(-5deg);
+  filter:
+    drop-shadow(0 18px 20px rgba(0, 0, 0, .56))
+    drop-shadow(0 0 1px rgba(101, 229, 209, .55));
+}
+
+/* Narrow facial study becomes a quieter vertical fragment. */
+.visual-anatomy .anatomy-study--face {
+  z-index: 5;
+  width: 21%;
+  right: 2%;
+  top: 11%;
+  opacity: .68;
+  transform: rotate(3deg);
+  filter:
+    drop-shadow(0 13px 17px rgba(0, 0, 0, .46))
+    drop-shadow(0 0 1px rgba(101, 229, 209, .58));
+}
+
+/* Creature skull reads as a ghosted study behind the foreground pieces. */
+.visual-anatomy .anatomy-study--skull {
+  z-index: 2;
+  width: 46%;
+  right: -8%;
+  bottom: 1%;
+  opacity: .31;
+  transform: rotate(4deg);
+  mix-blend-mode: screen;
+  filter:
+    grayscale(.22)
+    drop-shadow(0 12px 20px rgba(0, 0, 0, .36))
+    drop-shadow(0 0 2px rgba(200, 255, 77, .32));
+}
+
+/* Keep the existing technical sweep and HUD above the collage. */
+.visual-anatomy::before {
+  z-index: 7;
+}
+
+.visual-anatomy .visual-hud {
+  z-index: 8;
+}
+
+.visual-anatomy .visual-number {
+  z-index: 0;
+}
+
+@media (max-width: 760px) {
+  .visual-anatomy .anatomy-study--head {
+    width: 45%;
+    left: 28%;
+    top: 9%;
+  }
+
+  .visual-anatomy .anatomy-study--blockout {
+    width: 35%;
+    left: 1%;
+  }
+
+  .visual-anatomy .anatomy-study--face {
+    width: 22%;
+    right: 1%;
+    top: 12%;
+  }
+
+  .visual-anatomy .anatomy-study--skull {
+    width: 48%;
+    right: -9%;
+  }
+}
