@@ -1,0 +1,14 @@
+/* Homepage motion override.
+   Some systems report prefers-reduced-motion even when the visitor expects the
+   portfolio's ambient motion. Keep the tool marquee alive without changing the
+   rest of the shared stylesheet or the Three.js head. */
+@media (prefers-reduced-motion: reduce) {
+  .kinetic-track {
+    animation-name: marquee !important;
+    animation-duration: 28s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+    animation-delay: 0s !important;
+    transform: none;
+  }
+}
