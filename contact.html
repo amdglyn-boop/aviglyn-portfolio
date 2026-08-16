@@ -4,41 +4,98 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080a09">
-  <meta name="description" content="Contact Avi Glyn about 3D art, feedback, competitions and creative projects.">
+  <meta name="description" content="Contact Avi Glyn about 3D art, feedback, competitions, game development and creative projects.">
   <title>Contact — Avi Glyn</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css?v=20260817-2">
+  <link rel="stylesheet" href="/inner.css?v=20260817-2">
 </head>
-<body data-page="contact">
+<body class="inner-page" data-page="contact">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
   <div class="cursor-aura" data-cursor-aura aria-hidden="true"></div>
+
   <header class="site-header" data-header>
     <a class="brand" href="index.html" aria-label="Avi Glyn home"><span>AG</span><small>3D</small></a>
     <div class="header-status"><i></i><span>Building now</span></div>
-    <nav class="site-nav" aria-label="Main navigation"><a href="index.html#work">Work</a><a href="about.html">About</a><a class="is-current" href="contact.html">Contact</a></nav>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html#work">Work</a>
+      <a href="about.html">About</a>
+      <a class="is-current" href="contact.html">Contact</a>
+    </nav>
   </header>
 
-  <main id="main" class="page-main">
-    <section class="contact-hero section-shell">
-      <div class="contact-title reveal"><p class="eyebrow"><span>Contact / 01</span> Signal open</p><h1>Say<br><em>hello.</em></h1></div>
-      <div class="contact-signal reveal" aria-hidden="true"><div class="signal-rings"><i></i><i></i><i></i><b></b></div><span>OPEN TO<br>GOOD CONVERSATIONS</span></div>
+  <main id="main">
+    <section class="inner-hero section-shell">
+      <div class="inner-title reveal">
+        <p class="eyebrow"><span>Contact / 01</span> Come say hi</p>
+        <h1>Good chats<br><em>welcome.</em></h1>
+        <p class="inner-intro">If you’re into 3D, games, competitions, weird creature ideas, or you’ve got useful feedback on something I’m making, I’d genuinely like to hear from you.</p>
+      </div>
+
+      <div class="contact-console reveal" aria-label="Contact status">
+        <div class="console-grid" aria-hidden="true"></div>
+        <div class="console-top"><span>Signal / open</span><b>GOOD CONVERSATIONS</b></div>
+        <div class="signal-core" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+        <div class="console-bottom"><span>No polished pitch required</span><span>Just send a message</span></div>
+      </div>
     </section>
 
-    <section class="contact-layout section-shell reveal">
-      <div class="contact-copy"><p class="eyebrow"><span>02</span> Why get in touch</p><h2>Feedback. 3D chat.<br>Competitions. Ideas.</h2><p>I’m still figuring this out, which is exactly why I want to hear from artists, game makers and people with honest feedback.</p><div class="response-note"><i></i><span>Private delivery is not connected yet.<br>The interface is ready for the real address.</span></div></div>
-      <form class="contact-form" data-contact-form novalidate>
-        <label class="field"><span>01 / Your name</span><input type="text" name="name" autocomplete="name" placeholder="Name" required></label>
-        <label class="field"><span>02 / Your email</span><input type="email" name="email" autocomplete="email" placeholder="Email" required></label>
-        <label class="field"><span>03 / What’s this about?</span><input type="text" name="subject" placeholder="Subject" required></label>
-        <label class="field"><span>04 / Your message</span><textarea name="message" rows="5" placeholder="Write whatever you like…" required></textarea></label>
-        <div class="form-footer"><button class="action-button magnetic" type="submit"><span>Test the form</span><b aria-hidden="true">↗</b></button><p class="form-status" data-form-status aria-live="polite">No message will be sent yet.</p></div>
-      </form>
+    <section class="inner-section section-shell">
+      <div class="contact-grid reveal">
+        <aside class="contact-sidebar">
+          <p class="eyebrow"><span>02</span> Get in touch</p>
+          <h2>Feedback, ideas,<br>3D chat — all good.</h2>
+          <p>I’m still early in the process, so useful feedback is actually useful right now. If you know something I don’t, spot something I can improve, or just want to talk about the same sort of stuff, send it over.</p>
+          <div class="contact-tags" aria-label="Good reasons to get in touch">
+            <span>3D feedback</span><span>Game ideas</span><span>Competitions</span><span>Characters</span><span>Creatures</span><span>Learning</span>
+          </div>
+        </aside>
+
+        <div class="contact-panel">
+          <div class="form-kicker"><span>Message terminal / 01</span><span>Interface ready</span></div>
+          <form class="contact-form" data-contact-form novalidate>
+            <label class="field"><span>01 / Your name</span><input type="text" name="name" autocomplete="name" placeholder="What should I call you?" required></label>
+            <label class="field"><span>02 / Your email</span><input type="email" name="email" autocomplete="email" placeholder="Where can I reply?" required></label>
+            <label class="field"><span>03 / What’s this about?</span><input type="text" name="subject" placeholder="3D, feedback, game stuff..." required></label>
+            <label class="field"><span>04 / Your message</span><textarea name="message" rows="6" placeholder="Write whatever you like…" required></textarea></label>
+            <div class="form-footer">
+              <button class="action-button magnetic" type="submit"><span>Test the form</span><b aria-hidden="true">↗</b></button>
+              <p class="form-status" data-form-status aria-live="polite">The form looks real, but delivery is not connected yet.</p>
+            </div>
+          </form>
+        </div>
+      </div>
     </section>
 
-    <section class="contact-footer-line section-shell reveal"><span>INSTAGRAM — COMING SOON</span><span>YOUTUBE — COMING SOON</span><span>ZBRUSHCENTRAL — NEXT</span></section>
+    <section class="inner-section section-shell">
+      <div class="inner-heading reveal">
+        <div>
+          <p class="eyebrow"><span>03</span> Elsewhere</p>
+          <h2>More places<br><em>coming soon.</em></h2>
+        </div>
+        <p>I’m planning to start posting more of the process outside this site too. The accounts aren’t ready yet, so these stay as placeholders for now.</p>
+      </div>
+
+      <div class="social-dock reveal" aria-label="Future social links">
+        <div><small>Social / 01</small><strong>Instagram</strong><em>COMING SOON</em></div>
+        <div><small>Video / 02</small><strong>YouTube</strong><em>COMING SOON</em></div>
+        <div><small>Community / 03</small><strong>ZBrushCentral</strong><em>NEXT</em></div>
+      </div>
+    </section>
+
+    <section class="inner-cta section-shell reveal">
+      <p class="eyebrow"><span>04</span> Keep looking</p>
+      <h2>Or skip the chat.<br><em>See what I’m making.</em></h2>
+      <a class="action-button magnetic" href="index.html#work"><span>Back to the workbench</span><b aria-hidden="true">→</b></a>
+    </section>
   </main>
 
-  <footer class="site-footer section-shell"><div><a class="footer-brand" href="index.html">AVI GLYN</a><p>Characters / Creatures / Worlds</p></div><div class="footer-links"><a href="index.html#work">Work</a><a href="about.html">About</a><a href="contact.html">Contact</a></div><p class="footer-meta">© <span id="year"></span><br>Built while learning</p></footer>
-  <script src="main.js"></script>
+  <footer class="site-footer section-shell">
+    <div><a class="footer-brand" href="index.html">AVI GLYN</a><p>Characters / Creatures / Worlds</p></div>
+    <div class="footer-links"><a href="index.html#work">Work</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <p class="footer-meta">© <span id="year"></span><br>Built while learning</p>
+  </footer>
+
+  <script src="/main.js?v=20260817-2"></script>
 </body>
 </html>
