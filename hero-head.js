@@ -6,6 +6,7 @@ const stage = document.querySelector('[data-sculpture-stage]');
 
 if (canvas && stage) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionScale = reduceMotion ? 0.45 : 1;
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -55,7 +56,6 @@ if (canvas && stage) {
   let vertexColors = null;
   let deformationRadius = 0.5;
   let deformationAmount = 0.18;
-  let visible = true;
   let loaded = false;
 
   const baseColor = new THREE.Color(0xdcebd5);
@@ -94,13 +94,6 @@ if (canvas && stage) {
     pointerLookTarget.set(0, 0);
   });
 
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-    }, { rootMargin: '180px' }).observe(stage);
-  }
-
-  // Lee Perry-Smith head geometry, distributed in the three.js examples.
   const loader = new GLTFLoader();
   loader.load(
     'https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb',
@@ -123,13 +116,11 @@ if (canvas && stage) {
       const targetHeight = 4.65;
       const scale = targetHeight / Math.max(size.y, 0.001);
       headGroup.scale.setScalar(scale);
-
-      // Slightly lower the bust so the crown and neck both fit naturally in the hero frame.
       headGroup.position.y = -0.15;
       headGroup.rotation.y = -0.03;
 
-      deformationRadius = size.y * 0.115;
-      deformationAmount = size.y * 0.055;
+      deformationRadius = size.y * 0.18;
+      deformationAmount = size.y * 0.11;
 
       const position = geometry.getAttribute('position');
       const normal = geometry.getAttribute('normal');
@@ -161,16 +152,16 @@ if (canvas && stage) {
         vertexColors: true,
         wireframe: true,
         transparent: true,
-        opacity: 0.16,
+        opacity: 0.18,
         depthWrite: false
       });
 
       const pointMaterial = new THREE.PointsMaterial({
-        size: 0.028,
+        size: 0.03,
         sizeAttenuation: true,
         vertexColors: true,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.96,
         depthWrite: false,
         blending: THREE.AdditiveBlending
       });
@@ -179,10 +170,8 @@ if (canvas && stage) {
       const wire = new THREE.Mesh(geometry, wireMaterial);
       const points = new THREE.Points(geometry, pointMaterial);
 
-      // Keep a real mesh for raycasting; all three objects share the same deforming geometry.
       headMesh = solid;
       headGroup.add(solid, wire, points);
-
       loaded = true;
     },
     undefined,
@@ -193,11 +182,11 @@ if (canvas && stage) {
 
   function updateImpact() {
     pointerNdc.lerp(pointerTarget, 0.24);
-    pointerLook.lerp(pointerLookTarget, 0.08);
+    pointerLook.lerp(pointerLookTarget, 0.1);
 
     if (!loaded || !headMesh || !pointerInside) {
       targetImpactStrength = 0;
-      impactStrength += (targetImpactStrength - impactStrength) * 0.12;
+      impactStrength += (targetImpactStrength - impactStrength) * 0.13;
       return;
     }
 
@@ -208,13 +197,13 @@ if (canvas && stage) {
     if (hit) {
       tempImpact.copy(hit.point);
       headGroup.worldToLocal(tempImpact);
-      localImpact.lerp(tempImpact, 0.35);
+      localImpact.lerp(tempImpact, 0.45);
       targetImpactStrength = 1;
     } else {
       targetImpactStrength = 0;
     }
 
-    impactStrength += (targetImpactStrength - impactStrength) * 0.16;
+    impactStrength += (targetImpactStrength - impactStrength) * 0.2;
   }
 
   function deformGeometry(time) {
@@ -225,7 +214,7 @@ if (canvas && stage) {
     const arr = position.array;
     const colorArr = color.array;
     const count = position.count;
-    const pulse = reduceMotion ? 0 : Math.sin(time * 0.0017) * 0.0024;
+    const pulse = Math.sin(time * 0.0017) * 0.0045 * motionScale;
 
     for (let i = 0; i < count; i += 1) {
       const i3 = i * 3;
@@ -241,7 +230,7 @@ if (canvas && stage) {
       let targetZ = oz + nz * pulse;
       let influence = 0;
 
-      if (impactStrength > 0.002 && !reduceMotion) {
+      if (impactStrength > 0.002) {
         tempVertex.set(ox, oy, oz);
         const distance = tempVertex.distanceTo(localImpact);
 
@@ -252,9 +241,9 @@ if (canvas && stage) {
           tempDirection.set(ox - localImpact.x, oy - localImpact.y, oz - localImpact.z);
           if (tempDirection.lengthSq() < 0.000001) tempDirection.set(nx, ny, nz);
           tempDirection.normalize();
-          tempDirection.x = tempDirection.x * 0.58 + nx * 0.42;
-          tempDirection.y = tempDirection.y * 0.58 + ny * 0.42;
-          tempDirection.z = tempDirection.z * 0.58 + nz * 0.42;
+          tempDirection.x = tempDirection.x * 0.48 + nx * 0.52;
+          tempDirection.y = tempDirection.y * 0.48 + ny * 0.52;
+          tempDirection.z = tempDirection.z * 0.48 + nz * 0.52;
           tempDirection.normalize();
 
           const push = deformationAmount * influence;
@@ -264,22 +253,21 @@ if (canvas && stage) {
         }
       }
 
-      // Springy response makes the mesh visibly move and then settle back into the sculpt.
-      const spring = influence > 0.001 ? 0.32 : 0.085;
+      const spring = influence > 0.001 ? 0.38 : 0.1;
       arr[i3] += (targetX - arr[i3]) * spring;
       arr[i3 + 1] += (targetY - arr[i3 + 1]) * spring;
       arr[i3 + 2] += (targetZ - arr[i3 + 2]) * spring;
 
       if (influence > 0.001) {
-        mixedColor.copy(coolColor).lerp(hotColor, Math.min(1, influence * 1.4));
+        mixedColor.copy(coolColor).lerp(hotColor, Math.min(1, influence * 1.5));
       } else {
         const frontBias = Math.max(0, nz) * 0.18;
         mixedColor.copy(baseColor).lerp(coolColor, frontBias);
       }
 
-      colorArr[i3] += (mixedColor.r - colorArr[i3]) * 0.18;
-      colorArr[i3 + 1] += (mixedColor.g - colorArr[i3 + 1]) * 0.18;
-      colorArr[i3 + 2] += (mixedColor.b - colorArr[i3 + 2]) * 0.18;
+      colorArr[i3] += (mixedColor.r - colorArr[i3]) * 0.2;
+      colorArr[i3 + 1] += (mixedColor.g - colorArr[i3 + 1]) * 0.2;
+      colorArr[i3 + 2] += (mixedColor.b - colorArr[i3 + 2]) * 0.2;
     }
 
     position.needsUpdate = true;
@@ -291,22 +279,16 @@ if (canvas && stage) {
 
   function animate(time = 0) {
     resizeRenderer();
+    updateImpact();
+    deformGeometry(time);
 
-    if (visible && !document.hidden) {
-      updateImpact();
-      deformGeometry(time);
+    // Deliberately obvious continuous motion so the sculpture never reads as a still render.
+    headGroup.rotation.y = Math.sin(time * 0.00065) * (0.46 * motionScale) + pointerLook.x * 0.24;
+    headGroup.rotation.x = -0.035 + Math.sin(time * 0.00047) * (0.075 * motionScale) - pointerLook.y * 0.11;
+    headGroup.rotation.z = Math.sin(time * 0.00031) * (0.035 * motionScale);
+    headGroup.position.y = -0.15 + Math.sin(time * 0.0011) * (0.075 * motionScale);
 
-      if (!reduceMotion) {
-        // Slow continuous motion plus a restrained look toward the pointer.
-        headGroup.rotation.y = Math.sin(time * 0.00027) * 0.24 + pointerLook.x * 0.11;
-        headGroup.rotation.x = -0.035 + Math.sin(time * 0.00019) * 0.035 - pointerLook.y * 0.055;
-        headGroup.rotation.z = Math.sin(time * 0.00013) * 0.018;
-        headGroup.position.y = -0.15 + Math.sin(time * 0.0008) * 0.035;
-      }
-
-      renderer.render(scene, camera);
-    }
-
+    renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
 
