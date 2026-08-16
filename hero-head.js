@@ -1,302 +1,314 @@
-(() => {
-  const canvas = document.querySelector('[data-head-canvas]');
-  const stage = document.querySelector('[data-sculpture-stage]');
-  if (!canvas || !stage) return;
+import * as THREE from 'https://esm.sh/three@0.180.0';
+import { GLTFLoader } from 'https://esm.sh/three@0.180.0/examples/jsm/loaders/GLTFLoader.js';
 
+const canvas = document.querySelector('[data-head-canvas]');
+const stage = document.querySelector('[data-sculpture-stage]');
+
+if (canvas && stage) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const rows = 32;
-  const cols = 42;
-  const points = [];
-  const edges = [];
 
-  const gaussian = (value, spread) => Math.exp(-(value * value) / spread);
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: true,
+    powerPreference: 'high-performance'
+  });
+  renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-  function headSurface(x, y, front) {
-    const frontWeight = Math.max(0, front);
-    let depth = front * .82;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
+  camera.position.set(0, 0, 8.2);
 
-    // Human facial planes: brow, sockets, nose, cheeks, lips and chin.
-    const nose = gaussian(x, .022) * gaussian(y - .03, .085) * .34;
-    const leftEye = gaussian(x + .255, .022) * gaussian(y - .21, .022) * .14;
-    const rightEye = gaussian(x - .255, .022) * gaussian(y - .21, .022) * .14;
-    const brow = (gaussian(x + .25, .04) + gaussian(x - .25, .04)) * gaussian(y - .33, .018) * .055;
-    const cheeks = (gaussian(x + .31, .055) + gaussian(x - .31, .055)) * gaussian(y + .01, .09) * .07;
-    const lips = gaussian(x, .075) * gaussian(y + .285, .018) * .06;
-    const chin = gaussian(x, .085) * gaussian(y + .70, .055) * .105;
-    const philtrum = gaussian(x, .018) * gaussian(y + .19, .025) * .025;
+  const headGroup = new THREE.Group();
+  scene.add(headGroup);
 
-    depth += frontWeight * frontWeight * (nose - leftEye - rightEye + brow + cheeks + lips + chin + philtrum);
-    if (front < 0) depth *= 1.08; // fuller cranium at the back
-    return depth;
-  }
+  const ambient = new THREE.HemisphereLight(0xdfffc1, 0x08100a, 1.4);
+  scene.add(ambient);
 
-  // Deterministic UV head mesh. It is deliberately not random between page loads.
-  for (let r = 0; r < rows; r += 1) {
-    const v = (r + .5) / rows;
-    const sphereY = Math.cos(v * Math.PI);
-    const ringRadius = Math.sin(v * Math.PI);
-    const y = sphereY;
+  const key = new THREE.DirectionalLight(0xc8ff4d, 3.4);
+  key.position.set(3.5, 4.5, 5.5);
+  scene.add(key);
 
-    let width = .79 + gaussian(y - .05, .72) * .11;
-    if (y > .52) width *= 1 - (y - .52) * .12;
-    if (y < -.24) width *= 1 - Math.pow(Math.min(1, (-y - .24) / .76), 1.25) * .43;
+  const rim = new THREE.DirectionalLight(0x65e5d1, 2.2);
+  rim.position.set(-4, 1.5, -2.5);
+  scene.add(rim);
 
-    for (let c = 0; c < cols; c += 1) {
-      const theta = (c / cols) * Math.PI * 2;
-      const rawX = Math.sin(theta) * ringRadius;
-      const front = Math.cos(theta) * ringRadius;
-      const x = rawX * width;
-      let shapedY = y * 1.24;
+  const raycaster = new THREE.Raycaster();
+  const pointerNdc = new THREE.Vector2(9, 9);
+  const pointerTarget = new THREE.Vector2(0, 0);
+  const pointerLook = new THREE.Vector2(0, 0);
+  const pointerLookTarget = new THREE.Vector2(0, 0);
+  const localImpact = new THREE.Vector3();
+  const tempImpact = new THREE.Vector3();
+  const tempVertex = new THREE.Vector3();
+  const tempDirection = new THREE.Vector3();
 
-      // Slightly longer lower face and a compact crown.
-      if (y < -.22) shapedY -= Math.pow((-y - .22) / .78, 1.3) * .09;
-      if (y > .62) shapedY -= (y - .62) * .05;
-
-      const z = headSurface(x, y, front);
-      const seed = ((r * 73 + c * 37) % 211) / 211 * Math.PI * 2;
-      points.push({ x, y: shapedY, z, row: r, col: c, seed });
-    }
-  }
-
-  // Grid connections give the head a sculpted/wireframe read without an O(n²) pass every frame.
-  const indexOf = (r, c) => r * cols + ((c + cols) % cols);
-  for (let r = 0; r < rows; r += 1) {
-    for (let c = 0; c < cols; c += 1) {
-      if (c % 2 === 0) edges.push([indexOf(r, c), indexOf(r, c + 1)]);
-      if (r < rows - 1) edges.push([indexOf(r, c), indexOf(r + 1, c)]);
-      if (r < rows - 1 && (r + c) % 4 === 0) edges.push([indexOf(r, c), indexOf(r + 1, c + 1)]);
-    }
-  }
-
-  // Small feature curves sit just above the face surface so the form reads immediately as a head.
-  const features = [];
-
-  function addEye(cx) {
-    const curve = [];
-    for (let i = 0; i <= 18; i += 1) {
-      const a = (i / 18) * Math.PI * 2;
-      const x = cx + Math.cos(a) * .115;
-      const y = .225 + Math.sin(a) * .052;
-      const z = .79 + gaussian(x, .16) * .055;
-      curve.push({ x, y, z });
-    }
-    features.push(curve);
-  }
-
-  addEye(-.245);
-  addEye(.245);
-
-  const noseBridge = [];
-  for (let i = 0; i <= 16; i += 1) {
-    const t = i / 16;
-    const y = .34 - t * .43;
-    const x = Math.sin(t * Math.PI) * .012;
-    const z = .84 + Math.pow(t, 1.8) * .23;
-    noseBridge.push({ x, y, z });
-  }
-  features.push(noseBridge);
-
-  const mouth = [];
-  for (let i = 0; i <= 22; i += 1) {
-    const t = i / 22;
-    const x = -.235 + t * .47;
-    const y = -.315 + Math.cos((t - .5) * Math.PI * 2) * .012;
-    const z = .835 + gaussian(x, .10) * .045;
-    mouth.push({ x, y, z });
-  }
-  features.push(mouth);
-
-  let pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false };
+  let pointerInside = false;
+  let impactStrength = 0;
+  let targetImpactStrength = 0;
+  let headMesh = null;
+  let geometry = null;
+  let basePositions = null;
+  let baseNormals = null;
+  let vertexColors = null;
+  let deformationRadius = 0.5;
+  let deformationAmount = 0.18;
   let visible = true;
+  let loaded = false;
+
+  const baseColor = new THREE.Color(0xdcebd5);
+  const hotColor = new THREE.Color(0xc8ff4d);
+  const coolColor = new THREE.Color(0x65e5d1);
+  const mixedColor = new THREE.Color();
+
+  function resizeRenderer() {
+    const rect = stage.getBoundingClientRect();
+    const width = Math.max(1, rect.width);
+    const height = Math.max(1, rect.height);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    if (renderer.domElement.width !== Math.round(width * dpr) || renderer.domElement.height !== Math.round(height * dpr)) {
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+  }
+
+  function setPointerFromEvent(event) {
+    const rect = stage.getBoundingClientRect();
+    const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    const ny = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
+    pointerTarget.set(nx, ny);
+    pointerLookTarget.set(nx, ny);
+    pointerInside = true;
+  }
+
+  stage.addEventListener('pointerenter', setPointerFromEvent, { passive: true });
+  stage.addEventListener('pointermove', setPointerFromEvent, { passive: true });
+  stage.addEventListener('pointerleave', () => {
+    pointerInside = false;
+    targetImpactStrength = 0;
+    pointerLookTarget.set(0, 0);
+  });
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-    }, { rootMargin: '160px' }).observe(stage);
+    }, { rootMargin: '180px' }).observe(stage);
   }
 
-  stage.addEventListener('pointermove', (event) => {
-    const rect = stage.getBoundingClientRect();
-    pointer.tx = ((event.clientX - rect.left) / rect.width - .5) * 2;
-    pointer.ty = ((event.clientY - rect.top) / rect.height - .5) * 2;
-    pointer.active = true;
-  }, { passive: true });
+  // Lee Perry-Smith head geometry, distributed in the three.js examples.
+  const loader = new GLTFLoader();
+  loader.load(
+    'https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb',
+    (gltf) => {
+      let sourceMesh = null;
+      gltf.scene.traverse((child) => {
+        if (!sourceMesh && child.isMesh && child.geometry) sourceMesh = child;
+      });
 
-  stage.addEventListener('pointerleave', () => {
-    pointer.tx = 0;
-    pointer.ty = 0;
-    pointer.active = false;
-  });
+      if (!sourceMesh) return;
 
-  function fitCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const pixelWidth = Math.max(1, Math.round(rect.width * dpr));
-    const pixelHeight = Math.max(1, Math.round(rect.height * dpr));
-    if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
-      canvas.width = pixelWidth;
-      canvas.height = pixelHeight;
-    }
-    const ctx = canvas.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    return { ctx, width: rect.width, height: rect.height };
-  }
+      geometry = sourceMesh.geometry.clone();
+      geometry.deleteAttribute('uv');
+      geometry.computeVertexNormals();
+      geometry.center();
 
-  function rotatePoint(point, yaw, pitch, roll, breath) {
-    let x = point.x * breath;
-    let y = point.y * breath;
-    let z = point.z * breath;
+      const box = new THREE.Box3().setFromBufferAttribute(geometry.getAttribute('position'));
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const targetHeight = 4.65;
+      const scale = targetHeight / Math.max(size.y, 0.001);
+      headGroup.scale.setScalar(scale);
 
-    const cy = Math.cos(yaw);
-    const sy = Math.sin(yaw);
-    const rx = x * cy - z * sy;
-    const rz = x * sy + z * cy;
-    x = rx;
-    z = rz;
+      // Slightly lower the bust so the crown and neck both fit naturally in the hero frame.
+      headGroup.position.y = -0.15;
+      headGroup.rotation.y = -0.03;
 
-    const cx = Math.cos(pitch);
-    const sx = Math.sin(pitch);
-    const ry = y * cx - z * sx;
-    const rz2 = y * sx + z * cx;
-    y = ry;
-    z = rz2;
+      deformationRadius = size.y * 0.115;
+      deformationAmount = size.y * 0.055;
 
-    const cz = Math.cos(roll);
-    const sz = Math.sin(roll);
-    const finalX = x * cz - y * sz;
-    const finalY = x * sz + y * cz;
+      const position = geometry.getAttribute('position');
+      const normal = geometry.getAttribute('normal');
+      basePositions = new Float32Array(position.array);
+      baseNormals = new Float32Array(normal.array);
 
-    return { x: finalX, y: finalY, z };
-  }
-
-  function project(point, width, height, yaw, pitch, roll, breath, mouseStrength = 1) {
-    const rotated = rotatePoint(point, yaw, pitch, roll, breath);
-    const perspective = 1 / (2.05 - rotated.z * .30);
-    const scale = Math.min(width, height) * .46;
-    let x = width * .5 + rotated.x * scale * perspective;
-    let y = height * .51 - rotated.y * scale * perspective;
-
-    let influence = 0;
-    if (pointer.active && !reduceMotion) {
-      const cursorX = width * (.5 + pointer.x * .5);
-      const cursorY = height * (.5 + pointer.y * .5);
-      const dx = x - cursorX;
-      const dy = y - cursorY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const radius = Math.min(width, height) * .19;
-      influence = Math.max(0, 1 - distance / radius);
-      influence = influence * influence;
-      if (distance > .001 && influence > 0) {
-        const force = 38 * mouseStrength * influence;
-        x += (dx / distance) * force;
-        y += (dy / distance) * force;
+      vertexColors = new Float32Array(position.count * 3);
+      for (let i = 0; i < position.count; i += 1) {
+        const i3 = i * 3;
+        vertexColors[i3] = baseColor.r;
+        vertexColors[i3 + 1] = baseColor.g;
+        vertexColors[i3 + 2] = baseColor.b;
       }
+      geometry.setAttribute('color', new THREE.BufferAttribute(vertexColors, 3));
+
+      const shadowMaterial = new THREE.MeshPhongMaterial({
+        color: 0x0c130d,
+        emissive: 0x061009,
+        specular: 0x395a32,
+        shininess: 22,
+        transparent: true,
+        opacity: 0.32,
+        side: THREE.DoubleSide,
+        depthWrite: true
+      });
+
+      const wireMaterial = new THREE.MeshBasicMaterial({
+        color: 0x91aa8b,
+        vertexColors: true,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.16,
+        depthWrite: false
+      });
+
+      const pointMaterial = new THREE.PointsMaterial({
+        size: 0.028,
+        sizeAttenuation: true,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.9,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      const solid = new THREE.Mesh(geometry, shadowMaterial);
+      const wire = new THREE.Mesh(geometry, wireMaterial);
+      const points = new THREE.Points(geometry, pointMaterial);
+
+      // Keep a real mesh for raycasting; all three objects share the same deforming geometry.
+      headMesh = solid;
+      headGroup.add(solid, wire, points);
+
+      loaded = true;
+    },
+    undefined,
+    (error) => {
+      console.error('Hero head failed to load:', error);
     }
+  );
 
-    return { x, y, z: rotated.z, influence };
-  }
+  function updateImpact() {
+    pointerNdc.lerp(pointerTarget, 0.24);
+    pointerLook.lerp(pointerLookTarget, 0.08);
 
-  function draw(time = 0) {
-    if ((!visible || document.hidden) && !reduceMotion) {
-      requestAnimationFrame(draw);
+    if (!loaded || !headMesh || !pointerInside) {
+      targetImpactStrength = 0;
+      impactStrength += (targetImpactStrength - impactStrength) * 0.12;
       return;
     }
 
-    const { ctx, width, height } = fitCanvas();
-    ctx.clearRect(0, 0, width, height);
+    headGroup.updateMatrixWorld(true);
+    raycaster.setFromCamera(pointerNdc, camera);
+    const hit = raycaster.intersectObject(headMesh, false)[0];
 
-    pointer.x += (pointer.tx - pointer.x) * .075;
-    pointer.y += (pointer.ty - pointer.y) * .075;
-
-    const t = reduceMotion ? 0 : time;
-    const idleYaw = Math.sin(t * .00034) * .30;
-    const idlePitch = -.035 + Math.sin(t * .00021) * .045;
-    const yaw = idleYaw + pointer.x * .22;
-    const pitch = idlePitch - pointer.y * .11;
-    const roll = Math.sin(t * .00017) * .025;
-    const breath = 1 + Math.sin(t * .00125) * .007;
-
-    const projected = points.map((point) => {
-      // Tiny deterministic surface motion keeps the form living without melting the anatomy.
-      const micro = reduceMotion ? 1 : 1 + Math.sin(t * .00105 + point.seed) * .0028;
-      return project(
-        { x: point.x * micro, y: point.y * micro, z: point.z * micro },
-        width,
-        height,
-        yaw,
-        pitch,
-        roll,
-        breath,
-        1
-      );
-    });
-
-    // Mouse field: a soft halo makes the interaction obvious before the viewer notices individual vertices move.
-    if (pointer.active && !reduceMotion) {
-      const cursorX = width * (.5 + pointer.x * .5);
-      const cursorY = height * (.5 + pointer.y * .5);
-      const halo = ctx.createRadialGradient(cursorX, cursorY, 0, cursorX, cursorY, Math.min(width, height) * .20);
-      halo.addColorStop(0, 'rgba(200,255,77,.09)');
-      halo.addColorStop(.45, 'rgba(101,229,209,.035)');
-      halo.addColorStop(1, 'rgba(101,229,209,0)');
-      ctx.fillStyle = halo;
-      ctx.fillRect(0, 0, width, height);
+    if (hit) {
+      tempImpact.copy(hit.point);
+      headGroup.worldToLocal(tempImpact);
+      localImpact.lerp(tempImpact, 0.35);
+      targetImpactStrength = 1;
+    } else {
+      targetImpactStrength = 0;
     }
 
-    // Mesh lines.
-    ctx.lineWidth = .62;
-    for (const [aIndex, bIndex] of edges) {
-      const a = projected[aIndex];
-      const b = projected[bIndex];
-      const depth = Math.max(0, Math.min(1, (a.z + b.z + 1.5) / 3));
-      const cursorBoost = Math.max(a.influence, b.influence);
-      ctx.strokeStyle = cursorBoost > .05
-        ? `rgba(200,255,77,${.12 + cursorBoost * .50})`
-        : `rgba(190,231,177,${.025 + depth * .12})`;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
-    }
-
-    // Facial feature curves.
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    features.forEach((curve, curveIndex) => {
-      const screen = curve.map((point) => project(point, width, height, yaw, pitch, roll, breath, .55));
-      ctx.strokeStyle = curveIndex === 2
-        ? 'rgba(200,255,77,.72)'
-        : 'rgba(228,242,217,.38)';
-      ctx.lineWidth = curveIndex === 2 ? 1.05 : .78;
-      ctx.beginPath();
-      screen.forEach((point, index) => {
-        if (index === 0) ctx.moveTo(point.x, point.y);
-        else ctx.lineTo(point.x, point.y);
-      });
-      ctx.stroke();
-    });
-
-    // Vertices, depth sorted so the face feels volumetric.
-    const ordered = projected.map((p, index) => ({ ...p, index })).sort((a, b) => a.z - b.z);
-    ordered.forEach((point) => {
-      const depth = Math.max(0, Math.min(1, (point.z + 1.4) / 2.8));
-      const cursorBoost = point.influence;
-      const landmark = point.index % 71 === 0;
-      const radius = landmark ? 2.1 : .45 + depth * .9 + cursorBoost * 1.7;
-      ctx.beginPath();
-      ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
-      if (cursorBoost > .04) {
-        ctx.fillStyle = `rgba(200,255,77,${.42 + cursorBoost * .5})`;
-      } else if (landmark) {
-        ctx.fillStyle = 'rgba(101,229,209,.82)';
-      } else {
-        ctx.fillStyle = `rgba(231,241,224,${.11 + depth * .64})`;
-      }
-      ctx.fill();
-    });
-
-    if (!reduceMotion) requestAnimationFrame(draw);
+    impactStrength += (targetImpactStrength - impactStrength) * 0.16;
   }
 
-  draw();
-})();
+  function deformGeometry(time) {
+    if (!geometry || !basePositions || !baseNormals) return;
+
+    const position = geometry.getAttribute('position');
+    const color = geometry.getAttribute('color');
+    const arr = position.array;
+    const colorArr = color.array;
+    const count = position.count;
+    const pulse = reduceMotion ? 0 : Math.sin(time * 0.0017) * 0.0024;
+
+    for (let i = 0; i < count; i += 1) {
+      const i3 = i * 3;
+      const ox = basePositions[i3];
+      const oy = basePositions[i3 + 1];
+      const oz = basePositions[i3 + 2];
+      const nx = baseNormals[i3];
+      const ny = baseNormals[i3 + 1];
+      const nz = baseNormals[i3 + 2];
+
+      let targetX = ox + nx * pulse;
+      let targetY = oy + ny * pulse;
+      let targetZ = oz + nz * pulse;
+      let influence = 0;
+
+      if (impactStrength > 0.002 && !reduceMotion) {
+        tempVertex.set(ox, oy, oz);
+        const distance = tempVertex.distanceTo(localImpact);
+
+        if (distance < deformationRadius) {
+          const falloff = 1 - distance / deformationRadius;
+          influence = falloff * falloff * (3 - 2 * falloff) * impactStrength;
+
+          tempDirection.set(ox - localImpact.x, oy - localImpact.y, oz - localImpact.z);
+          if (tempDirection.lengthSq() < 0.000001) tempDirection.set(nx, ny, nz);
+          tempDirection.normalize();
+          tempDirection.x = tempDirection.x * 0.58 + nx * 0.42;
+          tempDirection.y = tempDirection.y * 0.58 + ny * 0.42;
+          tempDirection.z = tempDirection.z * 0.58 + nz * 0.42;
+          tempDirection.normalize();
+
+          const push = deformationAmount * influence;
+          targetX += tempDirection.x * push;
+          targetY += tempDirection.y * push;
+          targetZ += tempDirection.z * push;
+        }
+      }
+
+      // Springy response makes the mesh visibly move and then settle back into the sculpt.
+      const spring = influence > 0.001 ? 0.32 : 0.085;
+      arr[i3] += (targetX - arr[i3]) * spring;
+      arr[i3 + 1] += (targetY - arr[i3 + 1]) * spring;
+      arr[i3 + 2] += (targetZ - arr[i3 + 2]) * spring;
+
+      if (influence > 0.001) {
+        mixedColor.copy(coolColor).lerp(hotColor, Math.min(1, influence * 1.4));
+      } else {
+        const frontBias = Math.max(0, nz) * 0.18;
+        mixedColor.copy(baseColor).lerp(coolColor, frontBias);
+      }
+
+      colorArr[i3] += (mixedColor.r - colorArr[i3]) * 0.18;
+      colorArr[i3 + 1] += (mixedColor.g - colorArr[i3 + 1]) * 0.18;
+      colorArr[i3 + 2] += (mixedColor.b - colorArr[i3 + 2]) * 0.18;
+    }
+
+    position.needsUpdate = true;
+    color.needsUpdate = true;
+    geometry.computeVertexNormals();
+    geometry.getAttribute('normal').needsUpdate = true;
+    geometry.computeBoundingSphere();
+  }
+
+  function animate(time = 0) {
+    resizeRenderer();
+
+    if (visible && !document.hidden) {
+      updateImpact();
+      deformGeometry(time);
+
+      if (!reduceMotion) {
+        // Slow continuous motion plus a restrained look toward the pointer.
+        headGroup.rotation.y = Math.sin(time * 0.00027) * 0.24 + pointerLook.x * 0.11;
+        headGroup.rotation.x = -0.035 + Math.sin(time * 0.00019) * 0.035 - pointerLook.y * 0.055;
+        headGroup.rotation.z = Math.sin(time * 0.00013) * 0.018;
+        headGroup.position.y = -0.15 + Math.sin(time * 0.0008) * 0.035;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
