@@ -3,87 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Contact Avi Glyn about 3D art, feedback, game art and creative projects.">
+  <meta name="theme-color" content="#080a09">
+  <meta name="description" content="Contact Avi Glyn about 3D art, feedback, competitions and creative projects.">
   <title>Contact — Avi Glyn</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Avi Glyn home">AG</a>
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="index.html#work">Work</a>
-      <a href="about.html">About</a>
-      <a class="is-current" href="contact.html">Contact</a>
-    </nav>
+<body data-page="contact">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
+  <div class="cursor-aura" data-cursor-aura aria-hidden="true"></div>
+  <header class="site-header" data-header>
+    <a class="brand" href="index.html" aria-label="Avi Glyn home"><span>AG</span><small>3D</small></a>
+    <div class="header-status"><i></i><span>Building now</span></div>
+    <nav class="site-nav" aria-label="Main navigation"><a href="index.html#work">Work</a><a href="about.html">About</a><a class="is-current" href="contact.html">Contact</a></nav>
   </header>
 
-  <main class="page-main">
-    <section class="page-hero section-shell reveal">
-      <p class="eyebrow">Contact</p>
-      <h1>Say<br>hello.</h1>
-      <div class="page-intro-grid">
-        <p class="page-lead">Feedback, 3D chat, game art, competitions, interesting projects — I’m happy to hear from people while I’m figuring all this out.</p>
-        <p class="contact-side-note">The form is styled and ready. Private message delivery is the one bit we still need to connect behind the scenes.</p>
-      </div>
+  <main id="main" class="page-main">
+    <section class="contact-hero section-shell">
+      <div class="contact-title reveal"><p class="eyebrow"><span>Contact / 01</span> Signal open</p><h1>Say<br><em>hello.</em></h1></div>
+      <div class="contact-signal reveal" aria-hidden="true"><div class="signal-rings"><i></i><i></i><i></i><b></b></div><span>OPEN TO<br>GOOD CONVERSATIONS</span></div>
     </section>
 
-    <section class="section-shell contact-layout reveal">
-      <div class="contact-form-wrap">
-        <p class="eyebrow">Send a message</p>
-        <form class="contact-form" data-contact-form novalidate>
-          <div class="field-row">
-            <label class="field">
-              <span>Name</span>
-              <input type="text" name="name" autocomplete="name" placeholder="Your name" required>
-            </label>
-            <label class="field">
-              <span>Email</span>
-              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
-            </label>
-          </div>
-
-          <label class="field">
-            <span>Subject</span>
-            <input type="text" name="subject" placeholder="What’s this about?" required>
-          </label>
-
-          <label class="field">
-            <span>Message</span>
-            <textarea name="message" rows="7" placeholder="Write whatever you like..." required></textarea>
-          </label>
-
-          <div class="form-footer">
-            <button class="submit-button" type="submit">Send message <span aria-hidden="true">↗</span></button>
-            <p class="form-status" data-form-status aria-live="polite">Delivery connection coming next.</p>
-          </div>
-        </form>
-      </div>
-
-      <aside class="social-panel">
-        <p class="eyebrow">Elsewhere</p>
-        <a class="social-link is-disabled" href="#" aria-disabled="true" tabindex="-1">
-          <span>Instagram</span>
-          <small>Coming soon</small>
-        </a>
-        <a class="social-link is-disabled" href="#" aria-disabled="true" tabindex="-1">
-          <span>YouTube</span>
-          <small>Coming soon</small>
-        </a>
-        <div class="social-note">
-          <p>I’m planning to use these for work-in-progress posts, things I learned that week, and longer breakdowns once there’s enough worth talking about.</p>
-        </div>
-      </aside>
+    <section class="contact-layout section-shell reveal">
+      <div class="contact-copy"><p class="eyebrow"><span>02</span> Why get in touch</p><h2>Feedback. 3D chat.<br>Competitions. Ideas.</h2><p>I’m still figuring this out, which is exactly why I want to hear from artists, game makers and people with honest feedback.</p><div class="response-note"><i></i><span>Private delivery is not connected yet.<br>The interface is ready for the real address.</span></div></div>
+      <form class="contact-form" data-contact-form novalidate>
+        <label class="field"><span>01 / Your name</span><input type="text" name="name" autocomplete="name" placeholder="Name" required></label>
+        <label class="field"><span>02 / Your email</span><input type="email" name="email" autocomplete="email" placeholder="Email" required></label>
+        <label class="field"><span>03 / What’s this about?</span><input type="text" name="subject" placeholder="Subject" required></label>
+        <label class="field"><span>04 / Your message</span><textarea name="message" rows="5" placeholder="Write whatever you like…" required></textarea></label>
+        <div class="form-footer"><button class="action-button magnetic" type="submit"><span>Test the form</span><b aria-hidden="true">↗</b></button><p class="form-status" data-form-status aria-live="polite">No message will be sent yet.</p></div>
+      </form>
     </section>
+
+    <section class="contact-footer-line section-shell reveal"><span>INSTAGRAM — COMING SOON</span><span>YOUTUBE — COMING SOON</span><span>ZBRUSHCENTRAL — NEXT</span></section>
   </main>
 
-  <footer class="site-footer section-shell">
-    <p>© <span id="year"></span> Avi Glyn · Built while learning</p>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-    </div>
-  </footer>
-
+  <footer class="site-footer section-shell"><div><a class="footer-brand" href="index.html">AVI GLYN</a><p>Characters / Creatures / Worlds</p></div><div class="footer-links"><a href="index.html#work">Work</a><a href="about.html">About</a><a href="contact.html">Contact</a></div><p class="footer-meta">© <span id="year"></span><br>Built while learning</p></footer>
   <script src="main.js"></script>
 </body>
 </html>
