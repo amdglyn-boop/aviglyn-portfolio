@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Avi Glyn about 3D art, feedback, game art and creative projects.">
+  <title>Contact — Avi Glyn</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Avi Glyn home">AG</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html#work">Work</a>
+      <a href="about.html">About</a>
+      <a class="is-current" href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="page-main">
+    <section class="page-hero section-shell reveal">
+      <p class="eyebrow">Contact</p>
+      <h1>Say<br>hello.</h1>
+      <div class="page-intro-grid">
+        <p class="page-lead">Feedback, 3D chat, game art, competitions, interesting projects — I’m happy to hear from people while I’m figuring all this out.</p>
+        <p class="contact-side-note">The form is styled and ready. Private message delivery is the one bit we still need to connect behind the scenes.</p>
+      </div>
+    </section>
+
+    <section class="section-shell contact-layout reveal">
+      <div class="contact-form-wrap">
+        <p class="eyebrow">Send a message</p>
+        <form class="contact-form" data-contact-form novalidate>
+          <div class="field-row">
+            <label class="field">
+              <span>Name</span>
+              <input type="text" name="name" autocomplete="name" placeholder="Your name" required>
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Subject</span>
+            <input type="text" name="subject" placeholder="What’s this about?" required>
+          </label>
+
+          <label class="field">
+            <span>Message</span>
+            <textarea name="message" rows="7" placeholder="Write whatever you like..." required></textarea>
+          </label>
+
+          <div class="form-footer">
+            <button class="submit-button" type="submit">Send message <span aria-hidden="true">↗</span></button>
+            <p class="form-status" data-form-status aria-live="polite">Delivery connection coming next.</p>
+          </div>
+        </form>
+      </div>
+
+      <aside class="social-panel">
+        <p class="eyebrow">Elsewhere</p>
+        <a class="social-link is-disabled" href="#" aria-disabled="true" tabindex="-1">
+          <span>Instagram</span>
+          <small>Coming soon</small>
+        </a>
+        <a class="social-link is-disabled" href="#" aria-disabled="true" tabindex="-1">
+          <span>YouTube</span>
+          <small>Coming soon</small>
+        </a>
+        <div class="social-note">
+          <p>I’m planning to use these for work-in-progress posts, things I learned that week, and longer breakdowns once there’s enough worth talking about.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer section-shell">
+    <p>© <span id="year"></span> Avi Glyn · Built while learning</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
