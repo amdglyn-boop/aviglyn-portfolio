@@ -7,6 +7,7 @@
   <meta name="description" content="Avi Glyn is learning 3D character and creature art in public. Follow the work, experiments and progress.">
   <title>Avi Glyn — 3D Artist in Progress</title>
   <link rel="stylesheet" href="/style.css?v=20260816-2347">
+  <link rel="stylesheet" href="/home-motion.css?v=20260817-0107">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -175,7 +176,38 @@
     <p class="footer-meta">© <span id="year"></span><br>Built while learning</p>
   </footer>
 
-  <script src="/main.js?v=20260816-2347"></script>
+  <script>
+    // main.js previously froze its canvas animations whenever the operating system
+    // reported reduced motion. For this portfolio homepage, run the ambient workbench
+    // motion consistently, then immediately restore the browser's real preference so
+    // the standalone Three.js head remains completely untouched.
+    (() => {
+      const realMatchMedia = window.matchMedia.bind(window);
+      window.__aviglynRealMatchMedia = realMatchMedia;
+      window.matchMedia = (query) => {
+        if (query === '(prefers-reduced-motion: reduce)') {
+          return {
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener() {},
+            removeListener() {},
+            addEventListener() {},
+            removeEventListener() {},
+            dispatchEvent() { return false; }
+          };
+        }
+        return realMatchMedia(query);
+      };
+    })();
+  </script>
+  <script src="/main.js?v=20260817-0107"></script>
+  <script>
+    if (window.__aviglynRealMatchMedia) {
+      window.matchMedia = window.__aviglynRealMatchMedia;
+      delete window.__aviglynRealMatchMedia;
+    }
+  </script>
   <script type="module" src="/hero-head.js?v=20260817-0026"></script>
 </body>
 </html>
