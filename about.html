@@ -4,61 +4,121 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080a09">
-  <meta name="description" content="About Avi Glyn—learning character creation, creature art, animation and game development in public.">
+  <meta name="description" content="About Avi Glyn — an aspiring 3D artist learning character creation, anatomy, rigging, animation and game development in public.">
   <title>About — Avi Glyn</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css?v=20260817-2">
+  <link rel="stylesheet" href="/inner.css?v=20260817-2">
 </head>
-<body data-page="about">
+<body class="inner-page" data-page="about">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
   <div class="cursor-aura" data-cursor-aura aria-hidden="true"></div>
+
   <header class="site-header" data-header>
     <a class="brand" href="index.html" aria-label="Avi Glyn home"><span>AG</span><small>3D</small></a>
     <div class="header-status"><i></i><span>Building now</span></div>
-    <nav class="site-nav" aria-label="Main navigation"><a href="index.html#work">Work</a><a class="is-current" href="about.html">About</a><a href="contact.html">Contact</a></nav>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html#work">Work</a>
+      <a class="is-current" href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </header>
 
-  <main id="main" class="page-main">
-    <section class="page-hero section-shell">
-      <div class="page-title reveal"><p class="eyebrow"><span>About / 01</span> The honest version</p><h1>Not an expert.<br><em>Not standing still.</em></h1></div>
-      <div class="page-hero-bottom reveal">
-        <p>I’m Avi, and I started learning 3D on 28 June 2026. This is a public record of the gap between where I am and where I intend to go.</p>
-        <div class="mini-live"><i></i><strong data-counter="days">000</strong><span>days in<br>and counting</span></div>
+  <main id="main">
+    <section class="inner-hero section-shell">
+      <div class="inner-title reveal">
+        <p class="eyebrow"><span>About / 01</span> Where I’m at</p>
+        <h1>Still learning.<br><em>Still making.</em></h1>
+        <p class="inner-intro">I’m Avi. I started learning 3D on 28 June 2026, and this site is basically my public notebook — what I’m working on, what I’ve paused, what went wrong, and hopefully what keeps getting better.</p>
+      </div>
+
+      <div class="about-console reveal" aria-label="Live learning counter">
+        <div class="console-grid" aria-hidden="true"></div>
+        <div class="console-top"><span>Learning log / live</span><b>28.06.2026 → NOW</b></div>
+        <div class="day-display">
+          <div class="day-number"><strong data-counter="days">000</strong><span>days learning 3D</span></div>
+        </div>
+        <div class="console-bottom"><span>Started from zero</span><span>Still showing up</span></div>
       </div>
     </section>
 
-    <section class="beliefs section-shell reveal">
-      <p class="eyebrow"><span>02</span> What I believe</p>
-      <div class="belief-stack">
-        <article><span>01</span><h2>Form before noise.</h2><p>Anatomy, gesture and silhouette have to work before detail can rescue nothing.</p></article>
-        <article><span>02</span><h2>Finished beats hidden.</h2><p>Competition deadlines force decisions. A submitted piece teaches more than a perfect idea that never leaves the screen.</p></article>
-        <article><span>03</span><h2>Show the awkward bit.</h2><p>The work in progress matters. I want the improvement to be visible, not rewritten after the fact.</p></article>
+    <section class="inner-section section-shell">
+      <div class="about-story reveal">
+        <aside class="story-aside">
+          <span>02 / Why this exists</span>
+          <p>I want the progress to be visible while it’s happening, not rewritten later when everything looks polished.</p>
+        </aside>
+        <div class="story-copy">
+          <p>I’m not trying to make this site look like I’ve been doing 3D for ten years. <strong>I haven’t.</strong></p>
+          <p>I do want the site itself to feel considered, though. The work can be rough while I’m learning; the way I document it doesn’t have to be.</p>
+          <p>The idea is simple: keep making things, put them somewhere public, enter competitions when I can, talk to more artists, and make it harder to quietly give up when something gets difficult.</p>
+        </div>
       </div>
     </section>
 
-    <section class="focus-section section-shell">
-      <div class="section-heading reveal"><div><p class="eyebrow"><span>03</span> Current focus</p><h2>The skills feeding<br>the same goal.</h2></div><p>Build a character or creature from first form to finished, moving, game-ready result.</p></div>
-      <div class="focus-orbit reveal" data-focus-orbit>
-        <div class="focus-core"><span>THE</span><strong>WORK</strong><small>always central</small></div>
-        <article style="--i:0"><b>ZB</b><div><h3>ZBrush</h3><p>Sculpting / anatomy</p></div></article>
-        <article style="--i:1"><b>BL</b><div><h3>Blender</h3><p>Modelling / rigging</p></div></article>
-        <article style="--i:2"><b>SP</b><div><h3>Substance 3D</h3><p>Texture / material</p></div></article>
-        <article style="--i:3"><b>HO</b><div><h3>Houdini</h3><p>Procedural systems</p></div></article>
+    <section class="inner-section section-shell">
+      <div class="inner-heading reveal">
+        <div>
+          <p class="eyebrow"><span>03</span> Right now</p>
+          <h2>Three things I’m<br><em>properly focused on.</em></h2>
+        </div>
+        <p>There are a hundred directions I could disappear into with 3D. These are the three I’m actually trying to move forward at the moment.</p>
+      </div>
+
+      <div class="focus-board reveal">
+        <article class="focus-card" data-code="01"><b>FOCUS / 01</b><h3>Character creation<br>& anatomy</h3><p>Mainly ZBrush, with Blender alongside it. Better forms, better structure, better understanding of what sits under the surface.</p></article>
+        <article class="focus-card" data-code="02"><b>FOCUS / 02</b><h3>Rigging<br>& animation</h3><p>Learning how the things I build actually move — rig setup, weights, deformation and eventually animation that feels intentional.</p></article>
+        <article class="focus-card" data-code="03"><b>FOCUS / 03</b><h3>Game<br>development</h3><p>Bringing assets into Unreal Engine and slowly turning a pile of game ideas into things that can actually be played.</p></article>
       </div>
     </section>
 
-    <section class="timeline section-shell reveal">
-      <p class="eyebrow"><span>04</span> Direction of travel</p>
-      <div class="timeline-row"><time>Now</time><i></i><div><h3>Build the fundamentals</h3><p>Daily ZBrush and Blender practice. Anatomy, form, retopology, rigging and presentation.</p></div></div>
-      <div class="timeline-row"><time>Monthly</time><i></i><div><h3>Make the deadline real</h3><p>One competition day per week, producing one complete response to each Rookies brief.</p></div></div>
-      <div class="timeline-row"><time>Next</time><i></i><div><h3>Turn studies into case studies</h3><p>Replace placeholders with finished art, process breakdowns, decisions and what I would change.</p></div></div>
-      <div class="timeline-row"><time>Long term</time><i></i><div><h3>Build characters that belong in worlds</h3><p>Creature and character work strong enough for production, while developing Save the Date as a playable world.</p></div></div>
+    <section class="inner-section section-shell">
+      <div class="inner-heading reveal">
+        <div>
+          <p class="eyebrow"><span>04</span> Current toolkit</p>
+          <h2>The software is<br><em>just the workshop.</em></h2>
+        </div>
+        <p>I’m not trying to collect software logos. These are simply the tools I’m currently using to get from an idea to something finished.</p>
+      </div>
+
+      <div class="tool-lab reveal" aria-label="Software currently being learned">
+        <article class="tool-card-3d"><b>ZB</b><div><h3>ZBrush</h3><p>Sculpting / anatomy / forms</p></div></article>
+        <article class="tool-card-3d"><b>BL</b><div><h3>Blender</h3><p>Modelling / rigging / animation</p></div></article>
+        <article class="tool-card-3d"><b>UE</b><div><h3>Unreal Engine</h3><p>Game development / integration</p></div></article>
+        <article class="tool-card-3d"><b>SP</b><div><h3>Substance 3D Painter</h3><p>Texturing / materials</p></div></article>
+        <div class="tool-lab-label"><span>Current pipeline</span><strong>IDEA →<br>THING</strong></div>
+      </div>
     </section>
 
-    <section class="page-cta section-shell reveal"><p class="eyebrow"><span>05</span> Continue</p><h2>Enough talking.<br><em>See the workbench.</em></h2><a class="action-button magnetic" href="index.html#work"><span>View current work</span><b aria-hidden="true">→</b></a></section>
+    <section class="inner-section section-shell">
+      <div class="inner-heading reveal">
+        <div>
+          <p class="eyebrow"><span>05</span> Accountability</p>
+          <h2>Put the work<br><em>somewhere public.</em></h2>
+        </div>
+        <p>I want competitions and community posting to become part of the routine, not something I only do when I think a piece is already perfect.</p>
+      </div>
+
+      <div class="accountability-grid reveal">
+        <article><b>MONTHLY / 01</b><h3>Competitions</h3><p>One dedicated competition day each week, building toward full monthly submissions instead of rushed last-minute entries.</p></article>
+        <article><b>COMMUNITY / 02</b><h3>ZBrushCentral</h3><p>Post more often, show process, ask questions and get comfortable sharing work before it feels “ready.”</p></article>
+        <article><b>PUBLIC / 03</b><h3>This site</h3><p>Keep the projects, pauses, experiments and improvements visible. The archive should become part of the story.</p></article>
+      </div>
+    </section>
+
+    <section class="inner-cta section-shell reveal">
+      <p class="eyebrow"><span>06</span> Back to it</p>
+      <h2>Enough about me.<br><em>See the work.</em></h2>
+      <a class="action-button magnetic" href="index.html#work"><span>Open the workbench</span><b aria-hidden="true">→</b></a>
+    </section>
   </main>
 
-  <footer class="site-footer section-shell"><div><a class="footer-brand" href="index.html">AVI GLYN</a><p>Characters / Creatures / Worlds</p></div><div class="footer-links"><a href="index.html#work">Work</a><a href="about.html">About</a><a href="contact.html">Contact</a></div><p class="footer-meta">© <span id="year"></span><br>Built while learning</p></footer>
-  <script src="main.js"></script>
+  <footer class="site-footer section-shell">
+    <div><a class="footer-brand" href="index.html">AVI GLYN</a><p>Characters / Creatures / Worlds</p></div>
+    <div class="footer-links"><a href="index.html#work">Work</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <p class="footer-meta">© <span id="year"></span><br>Built while learning</p>
+  </footer>
+
+  <script src="/main.js?v=20260817-2"></script>
 </body>
 </html>
