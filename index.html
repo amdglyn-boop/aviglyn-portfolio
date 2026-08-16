@@ -3,124 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Avi Glyn — aspiring 3D artist learning in public through characters, anatomy, animation, game art and experiments.">
-  <title>Avi Glyn — Aspiring 3D Artist</title>
+  <meta name="theme-color" content="#080a09">
+  <meta name="description" content="Avi Glyn is learning 3D character and creature art in public. Follow the work, experiments and progress.">
+  <title>Avi Glyn — 3D Artist in Progress</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Avi Glyn home">AG</a>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
+  <div class="cursor-aura" data-cursor-aura aria-hidden="true"></div>
+
+  <header class="site-header" data-header>
+    <a class="brand" href="index.html" aria-label="Avi Glyn home">
+      <span>AG</span><small>3D</small>
+    </a>
+    <div class="header-status" aria-label="Current status">
+      <i></i><span>Building now</span>
+    </div>
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="#work">Work</a>
+      <a class="is-current" href="#work">Work</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
     </nav>
   </header>
 
-  <main id="top">
+  <main id="main">
     <section class="hero section-shell">
       <div class="hero-copy reveal">
-        <p class="eyebrow">Aspiring 3D Artist · Learning in public</p>
-        <h1>Avi<br>Glyn</h1>
-        <p class="hero-intro">
-          Characters, creatures, game ideas and messy experiments. I’m learning ZBrush, Blender, Unreal Engine and Substance 3D Painter as I go — this is where I keep track of the progress.
-        </p>
+        <p class="eyebrow"><span>01</span> 3D artist in progress</p>
+        <h1>Making<br><em>things</em><br>alive.</h1>
+        <p class="hero-intro">I’m Avi. I’m learning to build characters, creatures and worlds, then leaving the entire process visible—the wins, the ugly stages and everything between.</p>
         <div class="hero-actions">
-          <a class="text-link" href="#work">See what I’m working on <span aria-hidden="true">↘</span></a>
-          <a class="text-link quiet-link" href="about.html">Why I’m doing this <span aria-hidden="true">→</span></a>
+          <a class="action-button magnetic" href="#work"><span>Enter the workbench</span><b aria-hidden="true">↘</b></a>
+          <a class="text-link" href="about.html">The honest version <span aria-hidden="true">→</span></a>
         </div>
       </div>
 
-      <div class="tool-stage reveal" data-tool-stage aria-label="Tools I am currently learning">
-        <div class="tool-card card-zbrush">
-          <span class="tool-code">ZB</span>
-          <strong>ZBrush</strong>
-          <small>Main focus</small>
-        </div>
-        <div class="tool-card card-blender">
-          <span class="tool-code">BL</span>
-          <strong>Blender</strong>
-          <small>Modelling · Rigging</small>
-        </div>
-        <div class="tool-card card-unreal">
-          <span class="tool-code">UE</span>
-          <strong>Unreal Engine</strong>
-          <small>Game development</small>
-        </div>
-        <div class="tool-card card-painter">
-          <span class="tool-code">SP</span>
-          <strong>Substance Painter</strong>
-          <small>Texturing</small>
-        </div>
-        <p class="stage-note">Current toolkit · 2026</p>
+      <div class="sculpture-stage reveal" data-sculpture-stage>
+        <canvas class="sculpture-canvas" data-sculpture-canvas aria-label="Interactive generative digital sculpture"></canvas>
+        <div class="stage-reticle" aria-hidden="true"></div>
+        <div class="stage-orbit orbit-one" aria-hidden="true"></div>
+        <div class="stage-orbit orbit-two" aria-hidden="true"></div>
+        <div class="stage-label stage-label-top"><span>Digital clay study</span><b>01—LIVE</b></div>
+        <div class="stage-label stage-label-side"><span>Move pointer</span><b>to disturb form</b></div>
+        <div class="stage-coordinate" aria-hidden="true">X 08.16 / Y 26.06</div>
       </div>
+
+      <div class="hero-index" aria-hidden="true">PORTFOLIO / 2026</div>
     </section>
 
-    <section class="progress-band section-shell reveal" aria-label="Learning progress">
-      <div class="progress-stat">
-        <span class="progress-number" data-learning-days>—</span>
-        <span class="progress-label">days learning 3D</span>
+    <div class="kinetic-strip" aria-label="Current creative tools">
+      <div class="kinetic-track">
+        <span>ZBRUSH</span><i>✦</i><span>BLENDER</span><i>✦</i><span>SUBSTANCE 3D</span><i>✦</i><span>HOUDINI</span><i>✦</i><span>CREATURES</span><i>✦</i><span>CHARACTERS</span><i>✦</i>
+        <span aria-hidden="true">ZBRUSH</span><i aria-hidden="true">✦</i><span aria-hidden="true">BLENDER</span><i aria-hidden="true">✦</i><span aria-hidden="true">SUBSTANCE 3D</span><i aria-hidden="true">✦</i><span aria-hidden="true">HOUDINI</span><i aria-hidden="true">✦</i><span aria-hidden="true">CREATURES</span><i aria-hidden="true">✦</i><span aria-hidden="true">CHARACTERS</span><i aria-hidden="true">✦</i>
       </div>
-      <div class="progress-copy">
-        <p>Started 28 June 2026.</p>
-        <p>No pretending I’ve mastered it. The point is to keep showing up, keep making things, and leave the progress visible.</p>
+    </div>
+
+    <section class="live-log section-shell reveal" aria-labelledby="live-log-title">
+      <div class="live-log-heading">
+        <p class="eyebrow"><span>02</span> Live learning log</p>
+        <div class="live-chip"><i></i> Updating now</div>
       </div>
+      <div class="counter-wrap">
+        <div class="counter-intro">
+          <h2 id="live-log-title">No vague “started recently.”<br>This is the actual clock.</h2>
+          <p>Counting from 28 June 2026, the day I started learning 3D. Every second is another second in the work.</p>
+        </div>
+        <div class="live-counter" data-live-counter role="timer" aria-live="off">
+          <div class="counter-unit counter-primary"><strong data-counter="days">000</strong><span>Days</span></div>
+          <div class="counter-unit"><strong data-counter="hours">00</strong><span>Hours</span></div>
+          <div class="counter-unit"><strong data-counter="minutes">00</strong><span>Minutes</span></div>
+          <div class="counter-unit"><strong data-counter="seconds">00</strong><span>Seconds</span></div>
+        </div>
+      </div>
+      <div class="counter-track" aria-hidden="true"><span data-day-progress></span><i data-progress-marker></i></div>
     </section>
 
     <section id="work" class="work section-shell">
       <div class="section-heading reveal">
         <div>
-          <p class="eyebrow">The workbench</p>
-          <h2>What I’m making</h2>
+          <p class="eyebrow"><span>03</span> The workbench</p>
+          <h2>Work that moves,<br>even before it’s finished.</h2>
         </div>
-        <p class="section-side-note">Finished, unfinished and occasionally abandoned. All of it counts.</p>
+        <p>These are live project spaces, not polished claims. Real renders and breakdowns will replace the generative studies as each piece earns its place.</p>
       </div>
 
       <div class="project-grid">
-        <article class="project-card reveal">
-          <div class="project-image project-placeholder"><span>01</span></div>
+        <article class="project-card reveal tilt-card" data-tilt>
+          <div class="project-visual visual-anatomy">
+            <canvas data-project-canvas="anatomy" aria-hidden="true"></canvas>
+            <div class="visual-hud"><span>FORM_01</span><span>SCULPT STUDY</span></div>
+            <span class="visual-number">01</span>
+          </div>
           <div class="project-meta">
-            <div>
-              <span class="status status-live">In progress</span>
-              <h3>Character & anatomy studies</h3>
-              <p>ZBrush · Blender</p>
-            </div>
+            <div><span class="status status-live">In progress</span><h3>Creature & anatomy studies</h3><p>ZBrush / Blender / Form before detail</p></div>
             <span class="project-arrow" aria-hidden="true">↗</span>
           </div>
         </article>
 
-        <article class="project-card reveal">
-          <div class="project-image project-placeholder"><span>02</span></div>
+        <article class="project-card reveal tilt-card" data-tilt>
+          <div class="project-visual visual-rig">
+            <canvas data-project-canvas="rig" aria-hidden="true"></canvas>
+            <div class="visual-hud"><span>RIG_02</span><span>MOTION TEST</span></div>
+            <span class="visual-number">02</span>
+          </div>
           <div class="project-meta">
-            <div>
-              <span class="status status-live">Learning</span>
-              <h3>Rigging & animation</h3>
-              <p>Blender · Practice work</p>
-            </div>
+            <div><span class="status status-live">Learning</span><h3>Rigging & animation</h3><p>Blender / Weight / Deformation / Motion</p></div>
             <span class="project-arrow" aria-hidden="true">↗</span>
           </div>
         </article>
 
-        <article class="project-card reveal">
-          <div class="project-image project-placeholder"><span>03</span></div>
+        <article class="project-card reveal tilt-card" data-tilt>
+          <div class="project-visual visual-world">
+            <canvas data-project-canvas="world" aria-hidden="true"></canvas>
+            <div class="visual-hud"><span>WORLD_03</span><span>PLAYABLE IDEA</span></div>
+            <span class="visual-number">03</span>
+          </div>
           <div class="project-meta">
-            <div>
-              <span class="status">Experimenting</span>
-              <h3>Unreal Engine studies</h3>
-              <p>Assets · Scenes · Game ideas</p>
-            </div>
+            <div><span class="status">Developing</span><h3>Save the Date</h3><p>Stylised characters / Titanic prototype / Game world</p></div>
             <span class="project-arrow" aria-hidden="true">↗</span>
           </div>
         </article>
 
-        <article class="project-card reveal">
-          <div class="project-image project-placeholder"><span>04</span></div>
+        <article class="project-card reveal tilt-card" data-tilt>
+          <div class="project-visual visual-next">
+            <canvas data-project-canvas="next" aria-hidden="true"></canvas>
+            <div class="visual-hud"><span>NEXT_04</span><span>THEME UNKNOWN</span></div>
+            <span class="visual-number">04</span>
+          </div>
           <div class="project-meta">
-            <div>
-              <span class="status status-paused">Space reserved</span>
-              <h3>Your next project goes here</h3>
-              <p>We’ll replace these cards with the real work next.</p>
-            </div>
+            <div><span class="status status-waiting">Next month</span><h3>Rookies monthly challenge</h3><p>Four focused days / One complete submission</p></div>
             <span class="project-arrow" aria-hidden="true">↗</span>
           </div>
         </article>
@@ -128,63 +140,39 @@
     </section>
 
     <section class="challenge section-shell">
-      <div class="section-heading reveal">
-        <div>
-          <p class="eyebrow">Accountability</p>
-          <h2>Challenge board</h2>
-        </div>
-        <p class="section-side-note">One competition day a week. Four focused days across a monthly challenge.</p>
+      <div class="challenge-head reveal">
+        <p class="eyebrow"><span>04</span> Competition rhythm</p>
+        <h2>One day a week.<br><em>Four deliberate moves.</em></h2>
       </div>
-
-      <div class="challenge-grid reveal">
-        <article class="challenge-card">
-          <span class="challenge-index">01</span>
-          <p class="eyebrow">Week one</p>
-          <h3>Theme + references</h3>
-          <p>Break down the brief, pick an idea and gather references before touching the sculpt.</p>
-        </article>
-        <article class="challenge-card">
-          <span class="challenge-index">02</span>
-          <p class="eyebrow">Week two</p>
-          <h3>Blockout</h3>
-          <p>Get the big forms working. No hiding weak shapes under detail.</p>
-        </article>
-        <article class="challenge-card">
-          <span class="challenge-index">03</span>
-          <p class="eyebrow">Week three</p>
-          <h3>Detail + presentation</h3>
-          <p>Refine the piece, solve the materials and start thinking about the final images.</p>
-        </article>
-        <article class="challenge-card">
-          <span class="challenge-index">04</span>
-          <p class="eyebrow">Week four</p>
-          <h3>Finish + submit</h3>
-          <p>Call it done, render it properly and actually put it out into the world.</p>
-        </article>
+      <div class="challenge-route reveal">
+        <div class="route-line" aria-hidden="true"><span></span></div>
+        <article><b>01</b><i></i><p>Research</p><small>Theme, idea, references</small></article>
+        <article><b>02</b><i></i><p>Blockout</p><small>Silhouette, scale, big forms</small></article>
+        <article><b>03</b><i></i><p>Resolve</p><small>Detail, materials, presentation</small></article>
+        <article><b>04</b><i></i><p>Ship</p><small>Render, submit, learn</small></article>
       </div>
-      <div class="challenge-footer reveal">
-        <span class="status status-live">Next target</span>
-        <p>A full monthly Rookies challenge from brief to submission.</p>
+      <div class="challenge-note reveal">
+        <span class="signal-mark" aria-hidden="true"></span>
+        <p><strong>Next target:</strong> a complete Rookies monthly challenge—not a rushed “Gravity” entry with eight days left.</p>
       </div>
     </section>
 
-    <section class="home-about section-shell reveal">
-      <p class="eyebrow">About this site</p>
-      <h2>I’m still early.<br>That’s kind of the point.</h2>
-      <div class="home-about-copy">
-        <p>I want this to keep me accountable: make the work, post the work, learn from people who are better than me, enter competitions and keep moving.</p>
-        <a class="text-link" href="about.html">More about the process <span aria-hidden="true">→</span></a>
+    <section class="manifesto section-shell reveal">
+      <p class="eyebrow"><span>05</span> The point</p>
+      <div class="manifesto-grid">
+        <h2>I’m early.<br><span>Watch what happens next.</span></h2>
+        <div>
+          <p>This site is not here to fake a finished career. It is here to create one—project by project, mistake by mistake, in public.</p>
+          <a class="action-button magnetic" href="about.html"><span>Read the story</span><b aria-hidden="true">→</b></a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer section-shell">
-    <p>© <span id="year"></span> Avi Glyn · Built while learning</p>
-    <div class="footer-links">
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="#top">Back to top ↑</a>
-    </div>
+    <div><a class="footer-brand" href="#main">AVI GLYN</a><p>Characters / Creatures / Worlds</p></div>
+    <div class="footer-links"><a href="#work">Work</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <p class="footer-meta">© <span id="year"></span><br>Built while learning</p>
   </footer>
 
   <script src="main.js"></script>
