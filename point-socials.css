@@ -1,0 +1,53 @@
+/* Section 05 social buttons only. */
+
+.manifesto .social-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: clamp(50px, 6vw, 82px);
+}
+
+.manifesto .social-button {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: rgba(255,255,255,.025);
+  color: var(--text);
+  cursor: default;
+  transition: transform .28s var(--ease), background .25s ease, border-color .25s ease, box-shadow .28s ease;
+}
+
+.manifesto .social-button img {
+  width: 22px;
+  height: 22px;
+  display: block;
+  opacity: .9;
+  transition: filter .25s ease, opacity .25s ease, transform .28s var(--ease);
+}
+
+.manifesto .social-button:hover,
+.manifesto .social-button:focus-visible {
+  outline: none;
+  background: var(--acid);
+  border-color: var(--acid);
+  box-shadow: 0 0 8px rgba(200,255,77,.8), 0 0 24px rgba(200,255,77,.42), 0 0 48px rgba(200,255,77,.18);
+  transform: translateY(-4px) scale(1.04);
+}
+
+.manifesto .social-button:hover img,
+.manifesto .social-button:focus-visible img {
+  opacity: 1;
+  filter: brightness(0);
+  transform: scale(1.08);
+}
+
+@media (max-width: 760px) {
+  .manifesto .social-row {
+    justify-content: flex-start;
+  }
+}
