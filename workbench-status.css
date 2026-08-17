@@ -38,27 +38,31 @@
 
 .work .project-status-key .is-active {
   background: var(--acid);
-  box-shadow: 0 0 9px rgba(200,255,77,.42);
+  box-shadow: 0 0 5px rgba(200,255,77,.95), 0 0 13px rgba(200,255,77,.72), 0 0 24px rgba(200,255,77,.38);
 }
 
 .work .project-status-key .is-paused {
   background: var(--orange);
-  box-shadow: 0 0 9px rgba(255,116,72,.32);
+  box-shadow: 0 0 5px rgba(255,116,72,.92), 0 0 13px rgba(255,116,72,.68), 0 0 24px rgba(255,116,72,.34);
 }
 
 .work .project-status-key .is-complete {
   background: #69a9ff;
-  box-shadow: 0 0 9px rgba(105,169,255,.32);
+  box-shadow: 0 0 5px rgba(105,169,255,.95), 0 0 13px rgba(105,169,255,.7), 0 0 24px rgba(105,169,255,.36);
+}
+
+.work .status-live::before {
+  box-shadow: 0 0 5px rgba(200,255,77,1), 0 0 14px rgba(200,255,77,.78), 0 0 26px rgba(200,255,77,.42);
 }
 
 .work .status-paused::before {
   background: var(--orange);
-  box-shadow: 0 0 9px rgba(255,116,72,.3);
+  box-shadow: 0 0 5px rgba(255,116,72,.95), 0 0 14px rgba(255,116,72,.72), 0 0 26px rgba(255,116,72,.38);
   animation: none;
 }
 
 .work .status-complete::before {
   background: #69a9ff;
-  box-shadow: 0 0 9px rgba(105,169,255,.3);
+  box-shadow: 0 0 5px rgba(105,169,255,.96), 0 0 14px rgba(105,169,255,.72), 0 0 26px rgba(105,169,255,.38);
   animation: none;
 }
