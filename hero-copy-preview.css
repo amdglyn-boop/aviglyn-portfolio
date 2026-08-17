@@ -1,0 +1,83 @@
+/* Homepage hero copy and controls preview only. */
+
+.hero-workbench .hero-workbench-label {
+  display: inline-block;
+  transition: transform .16s ease;
+}
+
+.hero-workbench .hero-hammer {
+  overflow: visible;
+}
+
+.hero-workbench .hero-hammer-glyph {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 18px;
+  color: currentColor;
+  transform: rotate(-34deg);
+  transform-origin: 50% 65%;
+  transition: transform .2s cubic-bezier(.2,.8,.2,1);
+}
+
+.hero-workbench .hero-hammer-glyph::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 16px;
+  height: 5px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.hero-workbench .hero-hammer-glyph::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  width: 4px;
+  height: 13px;
+  border-radius: 0 0 2px 2px;
+  background: currentColor;
+}
+
+.hero-workbench:hover .hero-hammer-glyph {
+  transform: rotate(0deg) translateY(2px);
+}
+
+.hero-workbench:hover .hero-workbench-label {
+  transform: translate(1px, 1px);
+}
+
+.hero-who .hero-question {
+  display: inline-block;
+  min-width: 1em;
+  margin-left: 7px;
+  color: var(--acid);
+  font-weight: 850;
+  transform-origin: 50% 75%;
+}
+
+.hero-who:hover .hero-question {
+  animation: heroQuestionExcited .56s ease-in-out infinite;
+}
+
+@keyframes heroQuestionExcited {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  22% { transform: translateY(-2px) rotate(-10deg) scale(1.08); }
+  48% { transform: translateY(1px) rotate(9deg) scale(.98); }
+  72% { transform: translateY(-1px) rotate(-5deg) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-workbench .hero-workbench-label,
+  .hero-workbench .hero-hammer-glyph {
+    transition-duration: .16s !important;
+  }
+
+  .hero-who:hover .hero-question {
+    animation-duration: .56s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
