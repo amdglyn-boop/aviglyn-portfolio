@@ -22,15 +22,15 @@
   background-image: url('/assets/hammer-icon.svg?v=20260817-1119');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 82%;
+  background-size: 76%;
   mix-blend-mode: normal;
   transform: rotate(-34deg);
-  transform-origin: 50% 68%;
+  transform-origin: 50% 50%;
   transition: transform .2s cubic-bezier(.2,.8,.2,1);
 }
 
 .hero-workbench:hover .hero-hammer-glyph {
-  transform: rotate(0deg) translateY(2px);
+  transform: rotate(0deg) translateY(1px);
 }
 
 .hero-workbench:hover .hero-workbench-label {
