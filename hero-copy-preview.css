@@ -12,38 +12,25 @@
 .hero-workbench .hero-hammer-glyph {
   position: relative;
   display: block;
-  width: 18px;
-  height: 18px;
-  color: currentColor;
-  transform: rotate(-34deg);
-  transform-origin: 50% 65%;
+  width: 20px;
+  height: 20px;
+  background-image: url('/assets/hammer-icon.jpg?v=20260817-1047');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 145%;
+  mix-blend-mode: multiply;
+  transform: rotate(0deg);
+  transform-origin: 50% 62%;
   transition: transform .2s cubic-bezier(.2,.8,.2,1);
 }
 
-.hero-workbench .hero-hammer-glyph::before {
-  content: "";
-  position: absolute;
-  left: 1px;
-  top: 1px;
-  width: 16px;
-  height: 5px;
-  border-radius: 2px;
-  background: currentColor;
-}
-
+.hero-workbench .hero-hammer-glyph::before,
 .hero-workbench .hero-hammer-glyph::after {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 5px;
-  width: 4px;
-  height: 13px;
-  border-radius: 0 0 2px 2px;
-  background: currentColor;
+  content: none;
 }
 
 .hero-workbench:hover .hero-hammer-glyph {
-  transform: rotate(0deg) translateY(2px);
+  transform: rotate(43deg) translateY(2px);
 }
 
 .hero-workbench:hover .hero-workbench-label {
