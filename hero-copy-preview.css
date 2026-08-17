@@ -19,11 +19,11 @@
   display: block;
   width: 22px;
   height: 22px;
-  background-image: url('/assets/hammer-icon.jpg?v=20260817-1053');
+  background-image: url('/assets/hammer-icon.svg?v=20260817-1119');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
-  mix-blend-mode: multiply;
+  background-size: 82%;
+  mix-blend-mode: normal;
   transform: rotate(-34deg);
   transform-origin: 50% 68%;
   transition: transform .2s cubic-bezier(.2,.8,.2,1);
