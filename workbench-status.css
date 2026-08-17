@@ -66,3 +66,9 @@
   box-shadow: 0 0 5px rgba(105,169,255,.96), 0 0 14px rgba(105,169,255,.72), 0 0 26px rgba(105,169,255,.38);
   animation: none;
 }
+
+/* Preview test: remove the per-card reveal stagger so every project card
+   responds to pointer tilt on the same timing. */
+.work .project-card.reveal {
+  transition-delay: 0s;
+}
