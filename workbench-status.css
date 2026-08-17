@@ -1,0 +1,64 @@
+/* Workbench heading and project status indicators only. */
+
+.work .workbench-intro {
+  max-width: 440px;
+  justify-self: end;
+}
+
+.work .workbench-intro > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.work .project-status-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-top: 18px;
+}
+
+.work .project-status-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--soft);
+  font-size: .58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.work .project-status-key i {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+}
+
+.work .project-status-key .is-active {
+  background: var(--acid);
+  box-shadow: 0 0 9px rgba(200,255,77,.42);
+}
+
+.work .project-status-key .is-paused {
+  background: var(--orange);
+  box-shadow: 0 0 9px rgba(255,116,72,.32);
+}
+
+.work .project-status-key .is-complete {
+  background: #69a9ff;
+  box-shadow: 0 0 9px rgba(105,169,255,.32);
+}
+
+.work .status-paused::before {
+  background: var(--orange);
+  box-shadow: 0 0 9px rgba(255,116,72,.3);
+  animation: none;
+}
+
+.work .status-complete::before {
+  background: #69a9ff;
+  box-shadow: 0 0 9px rgba(105,169,255,.3);
+  animation: none;
+}
