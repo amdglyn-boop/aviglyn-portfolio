@@ -1,0 +1,12 @@
+/* Preview only: desktop/tablet scale tuning for sections 04 and 05. */
+
+@media (min-width: 761px) {
+  .challenge-head h2 {
+    font-size: clamp(3rem, 6.1vw, 7rem);
+  }
+
+  .manifesto h2 {
+    font-size: clamp(3rem, 5.2vw, 6.25rem);
+    line-height: .84;
+  }
+}
