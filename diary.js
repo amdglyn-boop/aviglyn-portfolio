@@ -2,6 +2,11 @@
   const replay = document.querySelector('[data-diary-replay]');
   if (!replay) return;
 
+  const previewStyles = document.createElement('link');
+  previewStyles.rel = 'stylesheet';
+  previewStyles.href = '/diary-carousel-preview.css?v=20260818-1627';
+  document.head.appendChild(previewStyles);
+
   const stage = replay.querySelector('[data-replay-stage]');
   const range = replay.querySelector('[data-replay-range]');
   const count = replay.querySelector('[data-replay-count]');
