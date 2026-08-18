@@ -11,16 +11,7 @@
   const next = replay.querySelector('[data-replay-next]');
   const dots = [...replay.querySelectorAll('[data-replay-dot]')];
 
-  const images = [
-    '/assets/diary/2026-08-18/01.webp',
-    '/assets/diary/2026-08-18/02.webp',
-    '/assets/diary/2026-08-18/03.webp',
-    '/assets/diary/2026-08-18/04.webp',
-    '/assets/diary/2026-08-18/05.webp',
-    '/assets/diary/2026-08-18/06.webp',
-    '/assets/diary/2026-08-18/07.webp',
-    '/assets/diary/2026-08-18/08.webp'
-  ];
+  const sprite = '/assets/diary/2026-08-18/octopus-progress-hq.webp?v=20260818-1557';
 
   const steps = [
     {
@@ -59,9 +50,14 @@
 
   let index = 0;
 
+  stage.style.backgroundImage = `url('${sprite}')`;
+  stage.style.backgroundRepeat = 'no-repeat';
+  stage.style.backgroundSize = 'auto 800%';
+
   const render = () => {
     const max = steps.length - 1;
-    stage.style.backgroundImage = `url('${images[index]}')`;
+    const position = max ? (index / max) * 100 : 0;
+    stage.style.backgroundPosition = `center ${position}%`;
     stage.setAttribute('aria-label', `${steps[index].title}. Step ${index + 1} of ${steps.length}.`);
     range.value = String(index);
     count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
