@@ -51,7 +51,7 @@
   const render = () => {
     const max = steps.length - 1;
     const position = max ? (index / max) * 100 : 0;
-    stage.style.backgroundPosition = `center ${position}%`;
+    stage.style.backgroundPosition = `${position}% center`;
     stage.setAttribute('aria-label', `${steps[index].title}. Step ${index + 1} of ${steps.length}.`);
     range.value = String(index);
     count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
