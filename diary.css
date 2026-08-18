@@ -219,9 +219,10 @@
   position: absolute;
   inset: 0;
   background-color: #2d2d2d;
-  background-position: 0% center;
+  background-image: url('/assets/diary/2026-08-18/octopus-progress.webp');
+  background-position: center 0%;
   background-repeat: no-repeat;
-  background-size: 800% 100%;
+  background-size: 100% 800%;
   cursor: ew-resize;
 }
 
