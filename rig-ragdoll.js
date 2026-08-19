@@ -300,6 +300,18 @@
     return posePoint(name, standPose);
   }
 
+  function settleStandingPose() {
+    Object.keys(standPose).forEach((name) => {
+      const target = posePoint(name, standPose);
+      const joint = joints[name];
+      joint.x = target.x;
+      joint.y = target.y;
+      joint.px = target.x;
+      joint.py = target.y;
+    });
+    mode = 'standing';
+  }
+
   function integrate(step, now) {
     if (mode === 'ragdoll' && !grabbedJoint && now - lastInteraction > 1700) {
       mode = 'recovery';
@@ -310,11 +322,14 @@
       ? Math.min(1, (now - recoveryStart) / 3000)
       : (mode === 'standing' ? 1 : 0);
 
-    if (mode === 'recovery' && recoveryProgress >= 1) mode = 'standing';
+    if (mode === 'recovery' && recoveryProgress >= 1) {
+      settleStandingPose();
+      return;
+    }
 
     const gravityScale = mode === 'standing' ? .06 : mode === 'recovery' ? (1 - recoveryProgress) * .24 : 1;
     const gravity = .50 * gravityScale * step * step;
-    const damping = mode === 'standing' ? .82 : .986;
+    const damping = mode === 'standing' ? .82 : mode === 'recovery' ? .90 : .986;
 
     Object.entries(joints).forEach(([name, joint]) => {
       if (joint === grabbedJoint) {
@@ -341,9 +356,16 @@
         joint.y += (target.y - joint.y) * .08 * step;
       } else if (mode === 'recovery') {
         const target = recoveryTarget(name, recoveryProgress);
-        const muscle = .018 + recoveryProgress * .075;
+        const muscle = .035 + recoveryProgress * .22;
         joint.x += (target.x - joint.x) * muscle * step;
         joint.y += (target.y - joint.y) * muscle * step;
+
+        if (recoveryProgress > .72) {
+          const settle = (recoveryProgress - .72) / .28;
+          const velocityKill = .18 + settle * .70;
+          joint.px += (joint.x - joint.px) * velocityKill;
+          joint.py += (joint.y - joint.py) * velocityKill;
+        }
       }
     });
   }
