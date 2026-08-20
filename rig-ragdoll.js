@@ -56,6 +56,18 @@
     }
   };
 
+  // These guides are recovery-only. The ragdoll remains fully loose while the user
+  // is throwing it around, but once it decides to get up each left/right limb is
+  // gently steered back to its own side before the body rises through the kneel.
+  const recoverySideGuides = [
+    ['lShoulder','rShoulder','chest', .045],
+    ['lElbow','rElbow','chest', .075],
+    ['lHand','rHand','chest', .105],
+    ['lHip','rHip','pelvis', .035],
+    ['lKnee','rKnee','pelvis', .065],
+    ['lFoot','rFoot','pelvis', .095]
+  ];
+
   const joints = {};
   const constraints = [];
   let width = 1;
@@ -67,6 +79,7 @@
   let lastInteraction = -Infinity;
   let mode = 'standing';
   let recoveryStart = 0;
+  let recoveryProgress = 0;
   let hoveredJoint = null;
   let grabbedJoint = null;
   let activePointerId = null;
@@ -257,7 +270,6 @@
     mode = 'ragdoll';
     grabbedJoint = null;
     pointer.down = false;
-
     const pointerId = activePointerId ?? event.pointerId;
     activePointerId = null;
     try {
@@ -295,8 +307,11 @@
   }
 
   function recoveryTarget(name, progress) {
-    if (progress < .34) return blendPose(getUpPoses.brace, getUpPoses.kneel, progress / .34, name);
-    if (progress < .72) return blendPose(getUpPoses.kneel, standPose, (progress - .34) / .38, name);
+    // Spend the opening part of recovery low to the floor. This gives crossed limbs
+    // time to untangle before the torso starts climbing into the kneel/stand.
+    if (progress < .18) return posePoint(name, getUpPoses.brace);
+    if (progress < .50) return blendPose(getUpPoses.brace, getUpPoses.kneel, (progress - .18) / .32, name);
+    if (progress < .82) return blendPose(getUpPoses.kneel, standPose, (progress - .50) / .32, name);
     return posePoint(name, standPose);
   }
 
@@ -306,7 +321,7 @@
       recoveryStart = now;
     }
 
-    const recoveryProgress = mode === 'recovery'
+    recoveryProgress = mode === 'recovery'
       ? Math.min(1, (now - recoveryStart) / 3000)
       : (mode === 'standing' ? 1 : 0);
 
@@ -314,7 +329,7 @@
 
     const gravityScale = mode === 'standing' ? .06 : mode === 'recovery' ? (1 - recoveryProgress) * .24 : 1;
     const gravity = .50 * gravityScale * step * step;
-    const damping = mode === 'standing' ? .82 : .986;
+    const damping = mode === 'standing' ? .82 : mode === 'recovery' ? .94 : .986;
 
     Object.entries(joints).forEach(([name, joint]) => {
       if (joint === grabbedJoint) {
@@ -341,9 +356,19 @@
         joint.y += (target.y - joint.y) * .08 * step;
       } else if (mode === 'recovery') {
         const target = recoveryTarget(name, recoveryProgress);
-        const muscle = .018 + recoveryProgress * .075;
+        const muscle = .025 + recoveryProgress * .13;
         joint.x += (target.x - joint.x) * muscle * step;
         joint.y += (target.y - joint.y) * muscle * step;
+
+        // Bleed off only some leftover ragdoll velocity as recovery progresses.
+        // This keeps the get-up organic without allowing old momentum to flip a limb
+        // back across the body after it has been guided onto the correct side.
+        if (recoveryProgress > .45) {
+          const settle = (recoveryProgress - .45) / .55;
+          const velocityKill = .08 + settle * .24;
+          joint.px += (joint.x - joint.px) * velocityKill;
+          joint.py += (joint.y - joint.py) * velocityKill;
+        }
       }
     });
   }
@@ -402,6 +427,50 @@
     enforceHinge('head','neck','chest',135,180);
   }
 
+
+  function keepRecoveryLimbsUncrossed() {
+    if (mode !== 'recovery') return;
+
+    const smooth = recoveryProgress * recoveryProgress * (3 - 2 * recoveryProgress);
+    const guideRamp = .18 + smooth * .82;
+    const strength = .035 + guideRamp * .055;
+    const gapRamp = .35 + guideRamp * .65;
+
+    recoverySideGuides.forEach(([leftName, rightName, centerName, gap]) => {
+      const left = joints[leftName];
+      const right = joints[rightName];
+      const center = joints[centerName];
+      if (!left || !right || !center) return;
+
+      const halfGap = width * gap * gapRamp;
+      const leftLimit = center.x - halfGap;
+      const rightLimit = center.x + halfGap;
+
+      if (left.x > leftLimit) {
+        const correction = (left.x - leftLimit) * strength;
+        left.x -= correction;
+        left.px -= correction * .65;
+      }
+      if (right.x < rightLimit) {
+        const correction = (rightLimit - right.x) * strength;
+        right.x += correction;
+        right.px += correction * .65;
+      }
+
+      // Also preserve left-to-right ordering. This catches cases where both limbs
+      // happen to be on the same side of the torso but are still crossed with each other.
+      const minGap = halfGap * 2;
+      const actualGap = right.x - left.x;
+      if (actualGap < minGap) {
+        const correction = (minGap - actualGap) * .5 * strength;
+        left.x -= correction;
+        right.x += correction;
+        left.px -= correction * .65;
+        right.px += correction * .65;
+      }
+    });
+  }
+
   function collideWithBounds(joint) {
     const margin = Math.max(8, joint.r + 2);
     if (joint.x < margin) {
@@ -428,6 +497,7 @@
     for (let iteration = 0; iteration < 10; iteration += 1) {
       constraints.forEach(constrainDistance);
       keepTorsoSensible();
+      keepRecoveryLimbsUncrossed();
       Object.values(joints).forEach(collideWithBounds);
       if (grabbedJoint) {
         grabbedJoint.x = Math.max(0, Math.min(width, pointer.x));
