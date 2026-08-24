@@ -1,8 +1,12 @@
-/* Diary entry navigation only. Loaded by diary.js. */
+/* Diary entry navigation and replay count overrides only. Loaded by diary.js. */
+
+.replay-dots {
+  grid-template-columns: repeat(var(--replay-step-count, 8), minmax(0, 1fr));
+}
 
 .diary-day-nav {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   padding-top: 0;
   padding-bottom: clamp(46px, 6vw, 82px);
@@ -39,7 +43,7 @@
 .diary-day-link strong {
   min-width: 0;
   color: var(--soft);
-  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-size: clamp(1.1rem, 1.7vw, 1.65rem);
   line-height: 1;
   letter-spacing: -.035em;
   font-weight: 600;
@@ -66,6 +70,12 @@
 
 .diary-entry-latest {
   border-top-color: rgba(200,255,77,.22);
+}
+
+@media (max-width: 1000px) {
+  .diary-day-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 700px) {
