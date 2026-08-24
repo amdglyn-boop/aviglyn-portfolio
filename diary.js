@@ -1,8 +1,8 @@
 (() => {
   const existingReplay = document.querySelector('[data-diary-replay]');
   if (!existingReplay) return;
-  if (document.documentElement.dataset.diaryDayTwoReady === 'true') return;
-  document.documentElement.dataset.diaryDayTwoReady = 'true';
+  if (document.documentElement.dataset.diaryEntriesReady === 'true') return;
+  document.documentElement.dataset.diaryEntriesReady = 'true';
 
   const addStylesheet = (href) => {
     if ([...document.styleSheets].some((sheet) => sheet.href && sheet.href.includes(href.split('?')[0]))) return;
@@ -13,9 +13,40 @@
   };
 
   addStylesheet('/diary-carousel-preview.css?v=20260818-1627');
-  addStylesheet('/diary-day-two.css?v=20260819-1');
+  addStylesheet('/diary-day-two.css?v=20260820-1');
 
   const entries = {
+    '2026-08-20': {
+      images: [
+        '/assets/diary/2026-08-20/01.webp',
+        '/assets/diary/2026-08-20/02.webp',
+        '/assets/diary/2026-08-20/03.webp',
+        '/assets/diary/2026-08-20/04.webp',
+        '/assets/diary/2026-08-20/05.webp'
+      ],
+      steps: [
+        {
+          title: 'Starting with the alien head',
+          copy: 'I began with a separate alien head study and used the exaggerated face to experiment with the brow, nose, mouth and deeper folds. It gave me room to push wrinkles without worrying too much about realism yet.'
+        },
+        {
+          title: 'Checking it in three-quarter',
+          copy: 'Rotating the alien head quickly showed where the forms were getting lumpy. The brow, cheek and mouth area changed a lot from this angle, which reminded me that a face has to work as a volume rather than only from the front.'
+        },
+        {
+          title: 'Starting a separate human head',
+          copy: 'I then moved onto a completely separate human head and tried to place the main facial landmarks more realistically. From the front I could get something readable, but I was already noticing that my proportions were not as solid as I thought.'
+        },
+        {
+          title: 'The profile exposed the problems',
+          copy: 'The side view was the biggest reality check. The skull depth, forehead, nose, mouth, chin and ear relationships made it obvious that my facial anatomy and proportions still need a lot of study.'
+        },
+        {
+          title: 'Pushing the wrinkle pass',
+          copy: 'I kept going and added more creases around the brow, eyes, nose and mouth. The wrinkles gave the face more character, but they also proved that surface detail cannot rescue weak underlying proportions. Even so, I was impressed that I could make a recognisable head at all.'
+        }
+      ]
+    },
     '2026-08-19': {
       images: [
         '/assets/diary/2026-08-19/01.webp',
@@ -110,13 +141,41 @@
     }
   };
 
-  const dotsMarkup = () => Array.from({ length: 8 }, (_, index) =>
+  const dotsMarkup = (count) => Array.from({ length: count }, (_, index) =>
     `<button class="replay-dot${index === 0 ? ' is-active' : ''}" data-replay-dot type="button" aria-label="Step ${index + 1}"></button>`
   ).join('');
 
+  const makeReplay = (date, firstTitle, firstCopy) => {
+    const count = entries[date].steps.length;
+    return `
+      <div class="replay" data-diary-replay data-diary-entry="${date}" tabindex="0">
+        <div class="replay-top"><span>Progress replay</span><span>Click the image or drag the timeline</span></div>
+        <div class="replay-grid">
+          <div class="replay-stage-wrap">
+            <div class="replay-stage" data-replay-stage role="img" aria-label="${firstTitle}. Step 1 of ${count}."></div>
+            <span class="replay-hint">Left side back • Right side forward</span>
+          </div>
+          <div class="replay-copy">
+            <span class="replay-count" data-replay-count>01 / ${String(count).padStart(2, '0')}</span>
+            <h3 data-replay-title>${firstTitle}</h3>
+            <p data-replay-copy>${firstCopy}</p>
+            <div class="replay-controls">
+              <input class="replay-range" data-replay-range type="range" min="0" max="${count - 1}" value="0" step="1" aria-label="Move through the sculpt progress">
+              <div class="replay-dots" style="--replay-step-count:${count}" aria-label="Progress steps">${dotsMarkup(count)}</div>
+              <div class="replay-buttons">
+                <button data-replay-previous type="button">Previous</button>
+                <button data-replay-next type="button">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
   const dayTwo = document.createElement('section');
   dayTwo.id = 'entry-2026-08-19';
-  dayTwo.className = 'diary-entry section-shell diary-entry-latest';
+  dayTwo.className = 'diary-entry section-shell';
   dayTwo.innerHTML = `
     <div class="entry-heading">
       <div>
@@ -132,28 +191,7 @@
       </div>
     </div>
 
-    <div class="replay" data-diary-replay data-diary-entry="2026-08-19" tabindex="0">
-      <div class="replay-top"><span>Progress replay</span><span>Click the image or drag the timeline</span></div>
-      <div class="replay-grid">
-        <div class="replay-stage-wrap">
-          <div class="replay-stage" data-replay-stage role="img" aria-label="Cleaning the webbing. Step 1 of 8."></div>
-          <span class="replay-hint">Left side back • Right side forward</span>
-        </div>
-        <div class="replay-copy">
-          <span class="replay-count" data-replay-count>01 / 08</span>
-          <h3 data-replay-title>Cleaning the webbing</h3>
-          <p data-replay-copy>I started by going back into the webbing between the tentacles. Yesterday it was still reading as thick joins, so I thinned and shaped the membranes and tried to make the transitions feel more organic.</p>
-          <div class="replay-controls">
-            <input class="replay-range" data-replay-range type="range" min="0" max="7" value="0" step="1" aria-label="Move through the sculpt progress">
-            <div class="replay-dots" aria-label="Progress steps">${dotsMarkup()}</div>
-            <div class="replay-buttons">
-              <button data-replay-previous type="button">Previous</button>
-              <button data-replay-next type="button">Next</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    ${makeReplay('2026-08-19', entries['2026-08-19'].steps[0].title, entries['2026-08-19'].steps[0].copy)}
 
     <div class="diary-notes">
       <article class="diary-note"><b>01</b><h3>What I worked on</h3><p>I cleaned the webbing and tentacle joins, pushed the secondary forms further, added folds and wrinkles around the body and mantle, and built sucker rows along the underside of the tentacles.</p></article>
@@ -163,22 +201,53 @@
     </div>
   `;
 
+  const dayThree = document.createElement('section');
+  dayThree.id = 'entry-2026-08-20';
+  dayThree.className = 'diary-entry section-shell diary-entry-latest';
+  dayThree.innerHTML = `
+    <div class="entry-heading">
+      <div>
+        <p class="eyebrow"><span>20.08.2026</span> ZBrush</p>
+        <h2>A rough lesson in facial anatomy.</h2>
+      </div>
+      <div class="entry-heading-copy">
+        <p>I made two separate head studies today: a looser alien head and a human face. I was trying to understand facial anatomy and sculpt wrinkles, but the more I rotated the human head the more obvious it became that my proportions are still weak. It did not turn out how I wanted, but I was genuinely impressed that I could make something this readable at all.</p>
+        <div class="course-note">
+          <small>Session reality</small>
+          <p>I kept getting power cuts during the day. Losing progress made one lesson very clear: saving regularly and keeping versions is part of the workflow, not something to remember at the end.</p>
+        </div>
+      </div>
+    </div>
+
+    ${makeReplay('2026-08-20', entries['2026-08-20'].steps[0].title, entries['2026-08-20'].steps[0].copy)}
+
+    <div class="diary-notes">
+      <article class="diary-note"><b>01</b><h3>What I worked on</h3><p>I sculpted two separate heads: an exaggerated alien study first, then a human head focused on facial landmarks, proportions and wrinkles around the brow, eyes, nose and mouth.</p></article>
+      <article class="diary-note"><b>02</b><h3>What I learned</h3><p>Profile and three-quarter views expose proportion problems much faster than a front view. I also learned that wrinkles only work when the structure underneath is convincing, and that saving constantly matters when the power is unreliable.</p></article>
+      <article class="diary-note"><b>03</b><h3>What needs work</h3><p>My skull shape, eye placement, ear size and position, and the relationships between the nose, mouth and chin all need more study. I also need to stop using wrinkles as a shortcut before the larger anatomy is working.</p></article>
+      <article class="diary-note"><b>04</b><h3>Next time</h3><p>Start simpler, check the big landmarks from front, profile and three-quarter views earlier, and hold off on wrinkles until the head proportions feel solid. Also: save versions throughout the session.</p></article>
+    </div>
+  `;
+
   const dayOne = document.querySelector('#entry-2026-08-18');
-  if (dayOne) dayOne.before(dayTwo);
+  if (dayOne) {
+    dayOne.before(dayTwo);
+    dayTwo.before(dayThree);
+  }
 
   existingReplay.dataset.diaryEntry = '2026-08-18';
 
   const heroEyebrow = document.querySelector('.diary-title .eyebrow');
-  if (heroEyebrow) heroEyebrow.innerHTML = '<span>Diary / 02</span> 19 August 2026';
+  if (heroEyebrow) heroEyebrow.innerHTML = '<span>Diary / 03</span> 20 August 2026';
 
   const latest = document.querySelector('.diary-latest');
   if (latest) {
     const heading = latest.querySelector('h2');
     const summary = latest.querySelector(':scope > p');
     const facts = latest.querySelector('.diary-facts');
-    if (heading) heading.textContent = 'Webbing, wrinkles and suckers.';
-    if (summary) summary.textContent = 'I pushed the octopus beyond the blockout today: cleaned the webbing, added folds and wrinkles, started smaller surface detail and built sucker rows along the tentacles.';
-    if (facts) facts.innerHTML = '<span>ZBrush</span><span>Secondary + tertiary</span><span>In progress</span>';
+    if (heading) heading.textContent = 'Faces, wrinkles and anatomy gaps.';
+    if (summary) summary.textContent = 'I made separate alien and human head studies, pushed facial wrinkles, and found out very quickly where my facial proportions still fall apart. Power cuts also taught me to save constantly.';
+    if (facts) facts.innerHTML = '<span>ZBrush</span><span>Facial anatomy</span><span>2 head studies</span>';
   }
 
   const hero = document.querySelector('.diary-hero');
@@ -187,7 +256,12 @@
     nav.className = 'diary-day-nav section-shell';
     nav.setAttribute('aria-label', 'Diary entries');
     nav.innerHTML = `
-      <a class="diary-day-link is-active" data-diary-day-link href="#entry-2026-08-19">
+      <a class="diary-day-link is-active" data-diary-day-link href="#entry-2026-08-20">
+        <small>Day 03 · 20 Aug</small>
+        <strong>Faces, wrinkles & anatomy</strong>
+        <span aria-hidden="true">↓</span>
+      </a>
+      <a class="diary-day-link" data-diary-day-link href="#entry-2026-08-19">
         <small>Day 02 · 19 Aug</small>
         <strong>Webbing, wrinkles & suckers</strong>
         <span aria-hidden="true">↓</span>
@@ -204,7 +278,7 @@
   const archive = document.querySelector('.diary-archive');
   if (archive) {
     const archiveHeading = archive.querySelector('.archive-heading h2');
-    if (archiveHeading) archiveHeading.textContent = 'Two days in.';
+    if (archiveHeading) archiveHeading.textContent = 'Three days in.';
 
     const dayOneArchive = archive.querySelector('a[href="#entry-2026-08-18"]');
     if (dayOneArchive && !archive.querySelector('a[href="#entry-2026-08-19"]')) {
@@ -213,6 +287,15 @@
       dayTwoArchive.href = '#entry-2026-08-19';
       dayTwoArchive.innerHTML = '<small>19 August 2026</small><div><h3>Webbing, wrinkles and suckers</h3><p>ZBrush • Secondary forms • Tertiary detail • Suckers</p></div><span aria-hidden="true">↗</span>';
       dayOneArchive.before(dayTwoArchive);
+    }
+
+    const dayTwoArchive = archive.querySelector('a[href="#entry-2026-08-19"]');
+    if (dayTwoArchive && !archive.querySelector('a[href="#entry-2026-08-20"]')) {
+      const dayThreeArchive = document.createElement('a');
+      dayThreeArchive.className = 'archive-entry';
+      dayThreeArchive.href = '#entry-2026-08-20';
+      dayThreeArchive.innerHTML = '<small>20 August 2026</small><div><h3>Faces, wrinkles and anatomy gaps</h3><p>ZBrush • Facial anatomy • Wrinkles • Two head studies</p></div><span aria-hidden="true">↗</span>';
+      dayTwoArchive.before(dayThreeArchive);
     }
   }
 
@@ -296,7 +379,7 @@
       if (visibleEntries[0]) setActiveDay(visibleEntries[0].target.id);
     }, { rootMargin: '-18% 0px -55% 0px', threshold: [0.08, 0.2, 0.4] });
 
-    ['entry-2026-08-19', 'entry-2026-08-18'].forEach((id) => {
+    ['entry-2026-08-20', 'entry-2026-08-19', 'entry-2026-08-18'].forEach((id) => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     });
