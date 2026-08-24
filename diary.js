@@ -35,9 +35,6 @@
         '/assets/diary/2026-08-21/Screenshot 2026-08-21 015846.png',
         '/assets/diary/2026-08-21/Screenshot 2026-08-21 015855.png',
         '/assets/diary/2026-08-21/Screenshot 2026-08-21 121629.png',
-        '/assets/diary/2026-08-21/Screenshot 2026-08-21 121634.png',
-        '/assets/diary/2026-08-21/Screenshot 2026-08-21 133432.png',
-        '/assets/diary/2026-08-21/Screenshot 2026-08-21 133442.png',
         '/assets/diary/2026-08-21/Screenshot 2026-08-21 133654.png',
         '/assets/diary/2026-08-21/Screenshot 2026-08-21 133819.png'
       ],
@@ -51,24 +48,12 @@
           copy: 'The front view made the symmetry and proportions much easier to judge. I kept it loose and treated this as an idea sketch rather than something I needed to finish.'
         },
         {
-          title: 'Starting the nose study',
-          copy: 'Later I switched to a focused nose study and used Morgan Freeman as reference. I broke the nose down into the bridge, tip, wings and nostrils instead of thinking of it as one simple shape.'
-        },
-        {
-          title: 'Comparing against reference',
-          copy: 'I kept the reference beside the sculpt and adjusted the width, nostril shape and underside. This helped me see how much character comes from small differences in the alar wings and the shape around the septum.'
-        },
-        {
-          title: 'Building the mouth area around it',
-          copy: 'I started adding the surrounding mouth forms so I could judge the nose in context. The lips were still rough, but they helped me understand the distance and transition between the base of the nose and the upper lip.'
-        },
-        {
-          title: 'Checking the profile',
-          copy: 'The side view was important again. I checked how far the nose projected from the face and how the lips sat underneath it, rather than trusting the front view alone.'
+          title: 'Starting the nose study from reference',
+          copy: 'Later I switched to a focused nose study and used Morgan Freeman as reference. I broke the nose down into the bridge, tip, alar wings, nostrils and septum, then kept comparing the width and underside against the reference instead of treating the nose as one simple shape.'
         },
         {
           title: 'Getting the forms to read together',
-          copy: 'By this point the nose and mouth were beginning to feel like connected anatomy instead of separate shapes. I kept smoothing and adjusting the transitions while trying not to lose the structure I had built.'
+          copy: 'I brought the rough mouth forms into the study so I could judge the nose in context, then checked how the nose projected and how the lips sat beneath it rather than trusting the front view alone. By this point the nose and mouth were starting to feel like connected anatomy instead of separate shapes.'
         },
         {
           title: 'Where I ended the day',
